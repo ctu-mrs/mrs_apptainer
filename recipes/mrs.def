@@ -1,0 +1,25 @@
+Bootstrap: localimage
+From: mrs_uav_system.sif
+
+%post
+
+    TARGET_LOCATION=/opt/mrs
+
+    # create internal .bashrc
+    touch $TARGET_LOCATION/singularity_bashrc.sh
+    chmod +x $TARGET_LOCATION/singularity_bashrc.sh
+    cat <<- EOF > $TARGET_LOCATION/singularity_bashrc.sh
+			#!/bin/bash
+			set -e
+
+			# setup ros environment
+			source "/opt/ros/noetic/setup.bash"
+			echo "ROS setup bash file sourced."
+		EOF
+
+%environment
+    export LC_ALL=C
+
+%runscript
+  ## Run custom entrypoint BASH script
+  exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh -c "$@"

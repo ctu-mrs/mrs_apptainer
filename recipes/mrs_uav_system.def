@@ -1,0 +1,33 @@
+Bootstrap: docker
+From: ros:noetic
+
+%post
+
+    apt-get -y update
+
+    # fix prompts during installation
+    echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
+    sudo apt-get install -y -q
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
+
+    apt-get -y install git
+
+    TARGET_LOCATION=/opt/mrs
+
+    mkdir -p $TARGET_LOCATION
+
+    # clone uav_core
+    mkdir -p $TARGET_LOCATION/git
+    cd $TARGET_LOCATION/git
+    git clone https://github.com/ctu-mrs/mrs_uav_system
+    cd mrs_uav_system
+    git checkout general_installation
+    ./install.sh -g /opt/mrs/git -l /opt/mrs
+
+    cd $TARGET_LOCATION/mrs_uav_system && rm -rf build
+
+    apt-get -y autoremove
+    apt-get -y clean
+
+%environment
+    export LC_ALL=C
