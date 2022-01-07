@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ros:noetic
+From: klaxalk/mrs_uav_system
 
 %post
 

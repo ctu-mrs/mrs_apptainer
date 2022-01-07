@@ -1,5 +1,5 @@
-Bootstrap: localimage
-From: mrs_uav_system.sif
+Bootstrap: docker
+From: klaxalk/mrs_uav_system
 
 %post
 
