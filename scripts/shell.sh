@@ -5,7 +5,7 @@ REPO_PATH=`dirname "$0"`
 REPO_PATH=`( cd "$REPO_PATH/.." && pwd )`
 
 DEBUG=false     # print stuff
-OVERLAY=false   # load persistant overlay
+OVERLAY=false   # load persistant overlay (initialize it with ./create_fs_overlay.sh)
 DETACH_TMP=true # detach tmp from the host
 NVIDIA=false    # use nvidia graphics natively
 
@@ -45,5 +45,5 @@ $EXEC_CMD singularity exec \
   $OVERLAY_ARG \
   $DETACH_TMP_ARG \
   --mount "type=bind,source=$REPO_PATH/mount,destination=/opt/mrs/host" \
-  $REPO_PATH/images/mrs_uav_system_extended.sif \
+  $REPO_PATH/images/mrs_uav_system.sif \
   bash --rcfile "/singularity"

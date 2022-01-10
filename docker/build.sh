@@ -4,4 +4,4 @@ MY_PATH=`( cd "$MY_PATH" && pwd )`
 
 cd $MY_PATH
 
-docker build -t klaxalk/mrs_uav_system:latest .
+docker build -t ctumrs/mrs_uav_system:latest .

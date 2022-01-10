@@ -1,0 +1,43 @@
+Bootstrap: docker
+From: ctumrs/mrs_uav_system
+
+%post
+
+    apt-get -y update
+
+    # fix prompts during installation
+    echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
+    sudo apt-get install -y -q
+    DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
+
+    apt-get -y install git vim ranger zsh
+
+    TARGET_LOCATION=/opt/mrs
+
+    # create internal .bashrc
+    touch $TARGET_LOCATION/singularity_bashrc.sh
+    chmod +x $TARGET_LOCATION/singularity_bashrc.sh
+
+    # Beware! The indentation in the following block has to be done with real <tab>
+    cat <<- EOF > $TARGET_LOCATION/singularity_bashrc.sh
+			#!/bin/bash
+
+			if [ -e /opt/mrs/host/singularity_rcfile.sh ]; then
+				echo "Sourcing singularity_rcfile.sh from mrs_singularity/mount/singularity_rcfile.sh"
+				source "/opt/mrs/host/singularity_rcfile.sh"
+			fi
+
+		EOF
+
+%environment
+
+    export LC_ALL=C
+
+%runscript
+
+  if [ -z $1 ]; then
+    exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh
+  else
+    CMD="${@}"
+    exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh -c "${CMD}"
+  fi

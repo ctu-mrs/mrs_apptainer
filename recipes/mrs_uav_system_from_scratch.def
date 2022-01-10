@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: ctumrs/mrs_uav_system
+From: ros:noetic
 
 %post
 
@@ -14,9 +14,26 @@ From: ctumrs/mrs_uav_system
 
     TARGET_LOCATION=/opt/mrs
 
+    mkdir -p $TARGET_LOCATION
+
+    # clone uav_core
+    mkdir -p $TARGET_LOCATION/git
+    cd $TARGET_LOCATION/git
+    git clone https://github.com/ctu-mrs/mrs_uav_system
+    cd mrs_uav_system
+    git checkout general_installation
+    ./install.sh -g /opt/mrs/git -l /opt/mrs
+
+    cd $TARGET_LOCATION/mrs_uav_system && rm -rf build
+
+    apt-get -y autoremove
+    apt-get -y clean
+
     # create internal .bashrc
     touch $TARGET_LOCATION/singularity_bashrc.sh
     chmod +x $TARGET_LOCATION/singularity_bashrc.sh
+
+    # Beware! The indentation in the following block has to be done with real <tab>
     cat <<- EOF > $TARGET_LOCATION/singularity_bashrc.sh
 			#!/bin/bash
 
