@@ -1,5 +1,5 @@
 Bootstrap: docker
-From: klaxalk/mrs_uav_system
+From: ctumrs/mrs_uav_system
 
 %post
 
