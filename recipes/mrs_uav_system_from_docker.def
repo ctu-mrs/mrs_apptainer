@@ -22,11 +22,23 @@ From: ctumrs/mrs_uav_system
     cat <<- EOF > $TARGET_LOCATION/singularity_bashrc.sh
 			#!/bin/bash
 
-			if [ -e /opt/mrs/host/singularity_rcfile.sh ]; then
-				echo "Sourcing singularity_rcfile.sh from mrs_singularity/mount/singularity_rcfile.sh"
-				source "/opt/mrs/host/singularity_rcfile.sh"
+			if [ -e /opt/mrs/host/singularity_bashrc.sh ]; then
+				echo "Sourcing singularity_bashrc.sh from mrs_singularity/mount/singularity_bashrc.sh"
+				source "/opt/mrs/host/singularity_bashrc.sh"
 			fi
+		EOF
 
+    # Beware! The indentation in the following block has to be done with real <tab>
+    cat <<- EOF > /.singularity.d/env/99-mrs_env.sh
+			#!/bin/bash
+
+			echo "sourcing custom env start"
+
+			PS1='[MRS Singularity] ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+
+			source /opt/mrs/mrs_workspace/devel/setup.bash
+
+			echo "sourcing custom env finished"
 		EOF
 
 %environment
@@ -34,6 +46,7 @@ From: ctumrs/mrs_uav_system
     export LC_ALL=C
 
 %runscript
+  echo "%runscript started"
 
   if [ -z $1 ]; then
     exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh
@@ -41,3 +54,5 @@ From: ctumrs/mrs_uav_system
     CMD="${@}"
     exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh -c "${CMD}"
   fi
+
+  echo "%runscript finished"
