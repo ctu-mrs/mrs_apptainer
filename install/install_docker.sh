@@ -11,7 +11,7 @@ MY_PATH=`( cd "$MY_PATH" && pwd )`
 
 ## | -------------- remove old version of docker -------------- |
 
-sudo apt-get -y remove docker docker-engine docker.io containerd runc
+sudo apt-get -y remove docker docker-engine docker.io containerd runc || echo "No old docker to uninstall"
 
 ## | -------------------- pre-install setup ------------------- |
 
