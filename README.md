@@ -17,24 +17,40 @@ docker pull ctumrs/mrs_uav_system
 
 Now you should see the terminal prompt of the singularity image, similar to this:
 ```bash
-[MRS Singularity] klaxalk@klaxalk-desktop:~$  
+[MRS Singularity] user@hostname:~$  
 ```
 
 You can test whether the MRS UAV System is operational by starting the [example simulation session](https://ctu-mrs.github.io/docs/simulation/howto.html).
 ```bash
-cd /opt/mrs/git/simulation/example_tmux_scripts/one_drone_gps
-./start.sh
+[MRS Singularity] user@hostname:~$ cd /opt/mrs/git/simulation/example_tmux_scripts/one_drone_gps
+[MRS Singularity] user@hostname:~$ ./start.sh
 ```
 
 In order to compile your own software with the MRS UAV System dependencies, start by placing it into the `user_ros_workspace/src` folder of this repository.
-This folder is mounted into the container as `~/user_ros_workspace`.
-You can then run the singularity image and execute:
+As an example, clone the [ctu-mrs/example_ros_packages](https://github.com/ctu-mrs/example_ros_packages) and update the submodules using [gitman](https://ctu-mrs.github.io/docs/software/gitman.html):
 ```bash
-cd ~/user_ros_workspace/
-catkin init
-catkin build
+cd user_ros_workspace/src
+git clone https://github.com/ctu-mrs/example_ros_packages.git
+cd example_ros_packages
+gitman install
+```
+This workspace folder is mounted into the container as `~/user_ros_workspace`.
+You can then run the singularity image, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
+```bash
+[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/
+[MRS Singularity] user@hostname:~$ catkin init
+[MRS Singularity] user@hostname:~$ catkin build
 ```
 This should compile your software.
+Although the workspace resides on your host computer, the software cannot be run by the host system.
+The catkin depencies point to the Container's paths.
+In order to run the sofware, go into the singularity container (`./wrapper.sh`) and run it through there.
+```bash
+./wrapper.sh
+[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/example_ros_packages/tmux_scripts/waypoint_flie
+[MRS Singularity] user@hostname:~$ ./start.sh
+r/
+```
 
 ## Default behavior
 
