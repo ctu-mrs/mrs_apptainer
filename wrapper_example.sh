@@ -33,7 +33,7 @@ WRITABLE=false # run as --writable (works with --sandbox containers)
 # definy what should be mounted from the host to the container
 MOUNTS=(
   # mount the custom user workspace into the container
-  "type=bind,source=$HOME/user_workspace,destination=$REPO_PATH/user_ros_workspace"
+  "type=bind,source=$REPO_PATH/user_ros_workspace,destination=$HOME/user_ros_workspace"
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
   "type=bind,source=$MOUNT_PATH,destination=/opt/mrs/host"

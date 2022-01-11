@@ -2,14 +2,39 @@
 
 ## How To
 
-1. install Singularity - [install/install_singularity.sh](./install/install_singularity.sh)
-2. install Docker - [install/install_docker.sh](./install/install_docker.sh)
-3. pull the latest docker image of the MRS UAV System
+1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
+2. Install Docker - [install/install_docker.sh](./install/install_docker.sh).
+3. Pull the latest docker image of the MRS UAV System.
 ```bash
 docker pull ctumrs/mrs_uav_system
 ```
-4. create Singularity image of the MRS UAV System - [scripts/build_mrs_uav_system_from_docker.sh](scripts/build_mrs_uav_system_from_docker.sh). _This can take up to 10 minutes, depending on your internet connection and computer resources._
-5. run the Singularity container using our wrapper (wrapper.sh)[./wrapper.sh]
+4. Create Singularity image of the MRS UAV System - [scripts/build_mrs_uav_system_from_docker.sh](scripts/build_mrs_uav_system_from_docker.sh). _This can take up to 10 minutes, depending on your internet connection and computer resources_.
+5. Copy the (wrapper_example.sh)[./wrapper_example.sh] (versioned example) into `wrapper.sh` (.gitignore). This will allow you to configure the wrapper for yourself.
+6. Run the Singularity container using the wrapper (wrapper.sh)[./wrapper.sh]
+```bash
+./wrapper.sh
+```
+
+Now you should see the terminal prompt of the singularity image, similar to this:
+```bash
+[MRS Singularity] klaxalk@klaxalk-desktop:~$  
+```
+
+You can test whether the MRS UAV System is operational by starting the [example simulation session](https://ctu-mrs.github.io/docs/simulation/howto.html).
+```bash
+cd /opt/mrs/git/simulation/example_tmux_scripts/one_drone_gps
+./start.sh
+```
+
+In order to compile your own software with the MRS UAV System dependencies, start by placing it into the `user_ros_workspace/src` folder of this repository.
+This folder is mounted into the container as `~/user_ros_workspace`.
+You can then run the singularity image and execute:
+```bash
+cd ~/user_ros_workspace/
+catkin init
+catkin build
+```
+This should compile your software.
 
 ## Default behavior
 
@@ -30,6 +55,7 @@ docker pull ctumrs/mrs_uav_system
 ├── README.md
 ├── recipes
 ├── scripts
+├── user_ros_workspace
 └── wrapper.sh
 ```
 
@@ -51,6 +77,13 @@ Contains Singularity images (.gitignored)
 ### install
 
 Installation scripts.
+
+### user_ros_workspace
+
+ROS workspace folder mounted into the container's `~/user_ros_workspace`.
+Use this for storing and compiling your packages.
+The packages need to be placed directle into `user_ros_workspace/src` without linking, the links do not translate into the container.
+The contents of the `user_ros_workspace` folder are .gitignored.
 
 ### mount
 
