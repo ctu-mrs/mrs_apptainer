@@ -3,8 +3,8 @@
 ## | ---------------------- config start ---------------------- |
 
 DEBUG=false     # print stuff
-OVERLAY=false   # load persistant overlay (initialize it with ./create_fs_overlay.sh)
-CONTAINED=false  # do not mount host's $HOME
+OVERLAY=true   # load persistant overlay (initialize it with ./create_fs_overlay.sh)
+CONTAINED=true  # do not mount host's $HOME
 DETACH_TMP=true # do not mount host's /tmp
 CLEAN_ENV=true  # clean environment before runnning container
 NVIDIA=true     # use nvidia graphics natively
@@ -23,7 +23,7 @@ REPO_PATH=`( cd "$REPO_PATH/.." && pwd )`
 
 if $OVERLAY; then
 
-  if [ ! -e overlays/overlay.img ]; then
+  if [ ! -e $REPO_PATH/overlays/overlay.img ]; then
     echo "Overlay file does not exist, initialize it with the 'create_fs_overlay.sh' script"
     exit 1
   fi
@@ -84,6 +84,8 @@ fi
 
 # create tmp folder for singularity in host's tmp
 [ ! -e /tmp/singularity_tmp ] && mkdir -p /tmp/singularity_tmp
+
+export SINGULARITYENV_DISPLAY=:0
 
 $EXEC_CMD singularity $ACTION \
   $NVIDIA_ARG \

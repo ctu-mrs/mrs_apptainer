@@ -1,3 +1,5 @@
+export SHELL=/usr/bin/bash
+
 # ~/.bashrc: executed by bash(1) for non-login shells.
 # see /usr/share/doc/bash/examples/startup-files (in the package bash-doc)
 # for examples
@@ -31,8 +33,7 @@ fi
 
 # set a fancy prompt (non-color, unless we know we "want" color)
 case "$TERM" in
-    xterm-color|*-256color) color_prompt=yes;;
-esac
+    xterm-color|*-256color) color_prompt=yes;; esac
 
 # uncomment for a colored prompt, if the terminal has the capability; turned
 # off by default to not distract the user: the focus in a terminal window
@@ -51,9 +52,9 @@ if [ -n "$force_color_prompt" ]; then
 fi
 
 if [ "$color_prompt" = yes ]; then
-    PS1='${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+    PS1='[MRS Singularity] ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
 else
-    PS1='${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
+    PS1='[MRS Singularity] ${debian_chroot:+($debian_chroot)}\u@\h:\w\$ '
 fi
 unset color_prompt force_color_prompt
 
@@ -110,10 +111,27 @@ if ! shopt -oq posix; then
   fi
 fi
 
-export DISPLAY=:0
+source /opt/mrs/mrs_workspace/devel/setup.bash
 
-[ -e /opt/ros/noetic/setup.zsh ] && source /opt/ros/noetic/setup.bash
-[ -e /opt/mrs/mrs_workspace/devel/setup.bash ] && source /opt/mrs/mrs_workspace/devel/setup.bash
+source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
 
-[ -e /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh ] && \
-  source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
+export ROS_MASTER_URI=http://localhost:11311
+export ROS_IP=127.0.0.1
+
+export ROS_DISTRO="noetic"
+export UAV_NAME="uav1"
+export NATO_NAME="" # lower-case name of the UAV frame {alpha, bravo, charlie, ...}
+export UAV_MASS="3.0" # [kg], used only with real UAV
+export RUN_TYPE="simulation" # {simulation, uav}
+export UAV_TYPE="f550" # {f550, f450, t650, eagle, naki}
+export PROPULSION_TYPE="default" # {default, new_esc, ...}
+export ODOMETRY_TYPE="gps" # {gps, optflow, hector, vio, ...}
+export INITIAL_DISTURBANCE_X="0.0" # [N], external disturbance in the body frame
+export INITIAL_DISTURBANCE_Y="0.0" # [N], external disturbance in the body frame
+export STANDALONE="false" # disables the core nodelete manager
+export SWAP_GARMINS="false" # swap up/down garmins
+export PIXGARM="false" # true if Garmin lidar is connected throught Pixhawk
+export SENSORS="" # {garmin_down, garmin_up, rplidar, realsense_front, teraranger, bluefox_optflow, realsense_brick, bluefox_brick}
+export WORLD_NAME="simulation" # e.g.: "simulation" <= mrs_general/config/world_simulation.yaml
+export MRS_STATUS="readme" # {readme, dynamics, balloon, avoidance, control_error, gripper}
+export LOGGER_DEBUG="false" # sets the ros console output level to debug
