@@ -26,6 +26,7 @@ From: ctumrs/mrs_uav_system
 				echo "Sourcing singularity_bashrc.sh from mrs_singularity/mount/singularity_bashrc.sh"
 				source "/opt/mrs/host/singularity_bashrc.sh"
 			fi
+
 		EOF
 
     # Beware! The indentation in the following block has to be done with real <tab>
@@ -34,9 +35,16 @@ From: ctumrs/mrs_uav_system
 
 			echo "sourcing custom env start"
 
-			PS1='[MRS Singularity] ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ '
+			# create /tmp tmux folder
+			USER_ID=$( id -u )
+			[ ! -e "/tmp/tmux-$USER_ID" ] && mkdir -p "/tmp/tmux-$USER_ID"
 
-			source /opt/mrs/mrs_workspace/devel/setup.bash
+			# link bash and zsh rc files
+			[ ! -e "$HOME/.bashrc" ] && ln -s /opt/mrs/host/singularity_bashrc.sh $HOME/.bashrc
+			[ ! -e "$HOME/.zshrc" ] && ln -s /opt/mrs/host/singularity_zshrc.sh $HOME/.zshrc
+
+			# link .tmux.conf
+			[ ! -e "$HOME/.tmux.conf" ] && ln -s /opt/mrs/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf $HOME/.tmux.conf
 
 			echo "sourcing custom env finished"
 		EOF

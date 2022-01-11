@@ -68,7 +68,8 @@ fi
 if [[ "$ACTION" == "run" ]]; then
   CMD=""
 elif [[ $ACTION == "exec" ]]; then
-  CMD=\""/bin/bash -c source /singularity && ${2}\""
+  CMD="/bin/bash -c \"${2}\""
+  # CMD="${2}"
 elif [[ $ACTION == "shell" ]]; then
   CMD=""
 else

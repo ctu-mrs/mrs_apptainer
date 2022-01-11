@@ -1,0 +1,50 @@
+Bootstrap: shub
+From: singularityhub/ubuntu
+
+%post
+
+    apt-get -y update
+
+    apt-get -y install git vim ranger zsh
+
+    TARGET_LOCATION=/opt/mrs
+    mkdir -p $TARGET_LOCATION
+
+    # Beware! The indentation in the following block has to be done with real <tab>
+    cat <<- EOF > /.singularity.d/env/99-mrs_env.sh
+			#!/bin/bash
+
+			echo "sourcing env/99-mrs_env.sh start"
+
+			# create /tmp tmux folder
+			USER_ID=$( id -u )
+			[ ! -e tmp/tmux-$USER_ID ] && mkdir -p /tmp/tmux-$USER_ID
+
+			# link bash and zsh rc files
+			[ ! -e ~/.bashrc ] && ln -s $TARGET_LOCATION/host/singularity_bashrc.sh ~/.bashrc
+			[ ! -e ~/.zshrc ] && ln -s $TARGET_LOCATION/host/singularity_zshrc.sh ~/.zshrc
+
+			# link .tmux.conf
+			[ ! -e ~/.tmux.conf ] && ln -s $TARGET_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ~/.tmux.conf
+
+			export PS1="[MRS Singularity]\w \$ "
+
+      export TERM='xterm-256color'
+
+			echo "sourcing env/99-mrs_env.sh finished"
+		EOF
+
+%environment
+
+    export LC_ALL=C
+
+%runscript
+  echo "%runscript started"
+
+  if [ -z "$@" ]; then
+    exec /bin/bash -i
+  else
+    exec /bin/bash -i -c "$@"
+  fi
+
+  echo "%runscript finished"
