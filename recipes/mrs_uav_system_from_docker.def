@@ -18,8 +18,6 @@ From: ctumrs/mrs_uav_system
     cat <<- EOF > /.singularity.d/env/99-mrs_env.sh
 			#!/bin/bash
 
-			echo "sourcing env/99-mrs_env.sh start"
-
 			# create /tmp tmux folder
 			USER_ID=$( id -u )
 			[ ! -e tmp/tmux-$USER_ID ] && mkdir -p /tmp/tmux-$USER_ID
@@ -32,22 +30,16 @@ From: ctumrs/mrs_uav_system
 			[ ! -e ~/.tmux.conf ] && ln -s $TARGET_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ~/.tmux.conf
 
 			export PS1="[MRS Singularity]\w \$ "
-
-			export TERM='xterm-256color'
-
-			echo "sourcing env/99-mrs_env.sh finished"
 		EOF
 
 %environment
     export LC_ALL=C
 
 %runscript
-  echo "%runscript started"
+  CMD="${@}"
 
-  if [ -z "$@" ]; then
+  if [ -z "${CMD}" ]; then
     exec /bin/bash -i
   else
-    exec /bin/bash -i -c "$@"
+    exec /bin/bash -i -c "${CMD}"
   fi
-
-  echo "%runscript finished"

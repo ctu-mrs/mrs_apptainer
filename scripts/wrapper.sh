@@ -4,14 +4,18 @@
 
 DEBUG=false     # print stuff
 OVERLAY=false   # load persistant overlay (initialize it with ./create_fs_overlay.sh)
-CONTAINED=true  # do not mount host's $HOME
+CONTAINED=false  # do not mount host's $HOME
 DETACH_TMP=true # do not mount host's /tmp
 CLEAN_ENV=true  # clean environment before runnning container
 NVIDIA=true     # use nvidia graphics natively
 
 ## | ----------------------- config end ----------------------- |
 
-ACTION=${1}
+if [ -z "$1" ]; then
+  ACTION="run"
+else
+  ACTION=${1}
+fi
 
 # get the path to this script
 REPO_PATH=`dirname "$0"`
@@ -66,10 +70,11 @@ else
 fi
 
 if [[ "$ACTION" == "run" ]]; then
-  CMD=""
+  shift
+  CMD="$@"
 elif [[ $ACTION == "exec" ]]; then
-  CMD="/bin/bash -c \"${2}\""
-  # CMD="${2}"
+  shift
+  CMD="/bin/bash -c \"${@}\""
 elif [[ $ACTION == "shell" ]]; then
   CMD=""
 else
