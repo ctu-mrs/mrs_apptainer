@@ -1,13 +1,22 @@
 #!/bin/bash
 
+## | -------------------------- paths ------------------------- |
+
 # get the path to this script
 REPO_PATH=`dirname "$0"`
 REPO_PATH=`( cd "$REPO_PATH/.." && pwd )`
 
-# to sandbox
-IMAGE_NAME=testing
-sudo singularity build --sandbox $REPO_PATH/images/$IMAGE_NAME/ $REPO_PATH/images/$IMAGE_NAME.sif
+IMAGES_PATH=$REPO_PATH/images
 
-# # from sandbox
-# IMAGE_NAME=testing
-# sudo singularity build $REPO_PATH/images/$IMAGE_NAME.sif $REPO_PATH/images/$IMAGE_NAME/
+## | ------------------------ paths end ----------------------- |
+
+FROM_SANDBOX=true # set to false to reverse the direction
+IMAGE_NAME=testing
+
+## | ------------------- do not modify below ------------------ |
+
+if $FROM_SANDBOX; then
+  sudo singularity build --sandbox $IMAGES_PATH/$IMAGE_NAME/ $IMAGES_PATH/$IMAGE_NAME.sif
+else
+  sudo singularity build $IMAGES_PATH/$IMAGE_NAME.sif $IMAGES_PATH/$IMAGE_NAME/
+fi
