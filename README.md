@@ -3,14 +3,10 @@
 ## How To
 
 1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
-2. Install Docker - [install/install_docker.sh](./install/install_docker.sh).
-3. Pull the latest docker image of the MRS UAV System (approx. 4 GB).
-```bash
-docker pull ctumrs/mrs_uav_system
-```
-4. Create Singularity image of the MRS UAV System - [scripts/build_mrs_uav_system_from_docker.sh](scripts/build_mrs_uav_system_from_docker.sh). _This can take up to 10 minutes, depending on your computer resources_.
-5. Copy the [wrapper_example.sh](./wrapper_example.sh) (versioned example) into `wrapper.sh` (.gitignored). This will allow you to configure the wrapper for yourself.
-6. Run the Singularity container using the wrapper [wrapper.sh](./wrapper.sh)
+2. (optional) Install Docker - [install/install_docker.sh](./install/install_docker.sh).
+3. Create Singularity image of the MRS UAV System - [scripts/build_mrs_uav_system_from_docker.sh](scripts/build_mrs_uav_system_from_docker.sh). _This can take up to 10 minutes, depending on your computer resources_.
+4. Copy the [wrapper_example.sh](./wrapper_example.sh) (versioned example) into `wrapper.sh` (.gitignored). This will allow you to configure the wrapper for yourself.
+5. Run the Singularity container using the wrapper [wrapper.sh](./wrapper.sh)
 ```bash
 ./wrapper.sh
 ```
