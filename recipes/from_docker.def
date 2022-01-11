@@ -11,7 +11,7 @@ From: ctumrs/mrs_uav_system
 # From: klaxalk/linux_setup:latest
 
 %post
-    INSTALL_LINUX_SETUP=true
+    INSTALL_LINUX_SETUP=false
 
     apt-get -y update
 
@@ -31,8 +31,6 @@ From: ctumrs/mrs_uav_system
       cd linux-setup
       git checkout devel
       ./install.sh --unattended
-      export PROFILES="COLORSCHEME_DARK"
-      ./backup_and_deploy.sh
 
     else
 
