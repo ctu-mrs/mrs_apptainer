@@ -4,20 +4,20 @@
 
 1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
 2. Install Docker - [install/install_docker.sh](./install/install_docker.sh).
-3. Pull the latest docker image of the MRS UAV System.
+3. Pull the latest docker image of the MRS UAV System (approx. 4 GB).
 ```bash
 docker pull ctumrs/mrs_uav_system
 ```
-4. Create Singularity image of the MRS UAV System - [scripts/build_mrs_uav_system_from_docker.sh](scripts/build_mrs_uav_system_from_docker.sh). _This can take up to 10 minutes, depending on your internet connection and computer resources_.
-5. Copy the (wrapper_example.sh)[./wrapper_example.sh] (versioned example) into `wrapper.sh` (.gitignore). This will allow you to configure the wrapper for yourself.
-6. Run the Singularity container using the wrapper (wrapper.sh)[./wrapper.sh]
+4. Create Singularity image of the MRS UAV System - [scripts/build_mrs_uav_system_from_docker.sh](scripts/build_mrs_uav_system_from_docker.sh). _This can take up to 10 minutes, depending on your computer resources_.
+5. Copy the [wrapper_example.sh](./wrapper_example.sh) (versioned example) into `wrapper.sh` (.gitignored). This will allow you to configure the wrapper for yourself.
+6. Run the Singularity container using the wrapper [wrapper.sh](./wrapper.sh)
 ```bash
 ./wrapper.sh
 ```
 
 Now you should see the terminal prompt of the singularity image, similar to this:
 ```bash
-[MRS Singularity] user@hostname:~$  
+[MRS Singularity] user@hostname:~$
 ```
 
 You can test whether the MRS UAV System is operational by starting the [example simulation session](https://ctu-mrs.github.io/docs/simulation/howto.html).
@@ -49,7 +49,6 @@ In order to run the sofware, go into the singularity container (`./wrapper.sh`) 
 ./wrapper.sh
 [MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/example_ros_packages/tmux_scripts/waypoint_flie
 [MRS Singularity] user@hostname:~$ ./start.sh
-r/
 ```
 
 ## Default behavior
