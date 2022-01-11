@@ -5,7 +5,7 @@ PROMPT='[MRS Singularity]%1~ %# '
 source /opt/mrs/mrs_workspace/devel/setup.zsh
 
 # source the user_workspace, if it exists
-[ -e ~/user_workspace/devel/setup.zsh ] && source ~/workspace/devel/setup.zsh
+[ -e ~/user_workspace/devel/setup.zsh ] && source ~/user_workspace/devel/setup.bash
 
 source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
 
