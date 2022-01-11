@@ -1,13 +1,18 @@
 #!/bin/bash
 
+# get the path to this script
+REPO_PATH=`dirname "$0"`
+REPO_PATH=`( cd "$REPO_PATH/.." && pwd )`
+
 ## | ---------------------- config start ---------------------- |
 
-DEBUG=false     # print stuff
-OVERLAY=true   # load persistant overlay (initialize it with ./create_fs_overlay.sh)
-CONTAINED=true  # do not mount host's $HOME
-DETACH_TMP=true # do not mount host's /tmp
-CLEAN_ENV=true  # clean environment before runnning container
-NVIDIA=true     # use nvidia graphics natively
+DEBUG=false                                     # print stuff
+OVERLAY=true                                    # load persistant overlay (initialize it with ./create_fs_overlay.sh)
+CONTAINED=true                                  # do not mount host's $HOME
+DETACH_TMP=true                                 # do not mount host's /tmp
+CLEAN_ENV=true                                  # clean environment before runnning container
+NVIDIA=true                                     # use nvidia graphics natively
+SIF_PATH="$REPO_PATH/images/mrs_uav_system.sif" # path relative to this repository
 
 ## | ----------------------- config end ----------------------- |
 
@@ -16,10 +21,6 @@ if [ -z "$1" ]; then
 else
   ACTION=${1}
 fi
-
-# get the path to this script
-REPO_PATH=`dirname "$0"`
-REPO_PATH=`( cd "$REPO_PATH/.." && pwd )`
 
 if $OVERLAY; then
 
@@ -94,5 +95,5 @@ $EXEC_CMD singularity $ACTION \
   $CONTAINED_ARG \
   $CLEAN_ENV_ARG \
   --mount "type=bind,source=$REPO_PATH/mount,destination=/opt/mrs/host" \
-  $REPO_PATH/images/mrs_uav_system.sif \
+  $SIF_PATH \
   $CMD
