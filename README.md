@@ -1,2 +1,100 @@
 # mrs_singularity
 
+## How To
+
+1. install Singularity - [install/install_singularity.sh](./install/install_singularity.sh)
+2. install Docker - [install/install_docker.sh](./install/install_docker.sh)
+3. pull the latest docker image of the MRS UAV System
+```bash
+docker pull ctumrs/mrs_uav_system
+```
+4. create Singularity image of the MRS UAV System - [scripts/build_mrs_uav_system_from_docker.sh](scripts/build_mrs_uav_system_from_docker.sh). _This can take up to 10 minutes, depending on your internet connection and computer resources._
+5. run the Singularity container using our wrapper (wrapper.sh)[./wrapper.sh]
+
+## Default behavior
+
+* The [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) is cloned into `/opt/mrs/git/mrs_uav_system`.
+* The **mrs_workspace** is located in `/opt/mrs/mrs_workspace`.
+* The container is run **without** mounted the host's `$HOME`.
+* The container's `/tmp` is mounted into host's `/tmp/singularity_tmp`.
+
+## Repository structure
+
+```
+.
+├── docker
+├── images
+├── install
+├── mount
+├── overlays
+├── README.md
+├── recipes
+├── scripts
+└── wrapper.sh
+```
+
+### wrapper.sh
+
+The main Singularity wrapper script.
+Use this to start our image.
+The script contains a _user configuration section_, please.
+
+### scripts
+
+Shell scripts that automate some of the work with Singularity.
+All the scripts expect to be run from within the _scripts_ folder.
+
+### images
+
+Contains Singularity images (.gitignored)
+
+### install
+
+Installation scripts.
+
+### mount
+
+Folder with MRS scripts and shell additions, that is mounted dynamically into the container as `/opt/mrs/host`.
+The folder contains the `.bashrc`, `.profile` and `.zshrc` that are sourced within the container when running it without host's `$HOME`.
+You can modify these to change the ROS behavior.
+
+### ovelays
+
+Place for Singularity overlay images (.gitignored).
+
+### recipes
+
+Singularity recipes.
+
+### docker
+
+Build script for the MRS UAV System docker image.
+
+## Installing additional stuff to existing .sif container
+
+### Bootstraping into a new container
+
+**PROS**:
+
+The preferred way is to bootstrap the existing container into a new contained with a custom recipe file.
+This allows you to be independent on the input container and recive updates.
+
+**CONS:**
+
+Building new container takes longer, therefore, finding out what you need to do is tedious.
+However, finding what actions you need to can can be done by modifying the container directly, see the maunal down below.
+
+### Modifying existing container
+
+If you really need to add stuff to the container, you can do that by following these steps:
+
+1. convert to _sandbox_ container
+```bash
+sudo singularity build --sandbox <final-container-directory> <input-file.sif>
+```
+3. run with **WRITABLE** and **FAKEROOT**
+4. modify the container, install stuff, etc.
+5. convert back to `.sif`
+```bash
+sudo singularity build <output-file.sif> <input-container-directory/>
+```

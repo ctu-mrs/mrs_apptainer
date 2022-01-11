@@ -2,7 +2,6 @@ Bootstrap: docker
 From: ros:noetic
 
 %post
-
     apt-get -y update
 
     # fix prompts during installation

@@ -111,6 +111,8 @@ if ! shopt -oq posix; then
   fi
 fi
 
+set -o vi
+
 source /opt/mrs/mrs_workspace/devel/setup.bash
 
 source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
