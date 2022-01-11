@@ -139,10 +139,14 @@ export WORLD_NAME="simulation" # e.g.: "simulation" <= mrs_general/config/world_
 export MRS_STATUS="readme" # {readme, dynamics, balloon, avoidance, control_error, gripper}
 export LOGGER_DEBUG="false" # sets the ros console output level to debug
 
-# source uav_core from within
+export ROS_WORKSPACES="/opt/mrs/mrs_workspace ~/user_ros_workspace"
+
+# source uav_core from within the container
 source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
 
 # source the linux setup from within
 if [ -e /opt/klaxalk/git/linux-setup/appconfig/bash/dotbashrc ]; then
+
   source /opt/klaxalk/git/linux-setup/appconfig/bash/dotbashrc
+
 fi
