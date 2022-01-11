@@ -30,8 +30,9 @@ From: ctumrs/mrs_uav_system
       git clone https://github.com/klaxalk/linux-setup
       cd linux-setup
       git checkout devel
-      export PROFILES="COLORSCHEME_DARK"
       ./install.sh --unattended
+      export PROFILES="COLORSCHEME_DARK"
+      ./backup_and_deploy.sh
 
     else
 
@@ -52,14 +53,12 @@ From: ctumrs/mrs_uav_system
 			USER_ID=$( id -u )
 			[ ! -e tmp/tmux-$USER_ID ] && mkdir -p /tmp/tmux-$USER_ID
 
-			# the following section links config files for Tomas's Linux Setup
-
 			# link bash and zsh rc files
-			[ ! -e ~/.bashrc ] && [ -e $TARGET_LOCATION/host/singularity_bashrc.sh ] && ln -s $TARGET_LOCATION/host/singularity_bashrc.sh ~/.bashrc
+			[ ! -e ~/.bashrc ] &&  ln -s $TARGET_LOCATION/host/singularity_bashrc.sh ~/.bashrc
+			[ ! -e ~/.zshrc ] && ln -s $TARGET_LOCATION/host/singularity_zshrc.sh ~/.zshrc
+			[ ! -e ~/.profile ] && ln -s $TARGET_LOCATION/host/singularity_profile.sh ~/.profile
 
-			[ ! -e ~/.zshrc ] && [ -e $TARGET_LOCATION/host/singularity_zshrc.sh ] && ln -s $TARGET_LOCATION/host/singularity_zshrc.sh ~/.zshrc
-
-			[ ! -e ~/.profile ] && [ -e $TARGET_LOCATION/host/singularity_profile.sh ] && ln -s $TARGET_LOCATION/host/singularity_profile.sh ~/.profile
+			# the following section links config files for Tomas's Linux Setup
 
 			# link .tmux.conf
 			[ ! -e ~/.tmux.conf ] && [ -e $TARGET_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ] && ln -s $TARGET_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ~/.tmux.conf
