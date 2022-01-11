@@ -13,7 +13,6 @@ From: ros:noetic
     apt-get -y install git vim ranger zsh
 
     TARGET_LOCATION=/opt/mrs
-
     mkdir -p $TARGET_LOCATION
 
     # clone uav_core
@@ -22,26 +21,35 @@ From: ros:noetic
     git clone https://github.com/ctu-mrs/mrs_uav_system
     cd mrs_uav_system
     git checkout general_installation
-    ./install.sh -g /opt/mrs/git -l /opt/mrs
+    ./install.sh -g $TARGET_LOCATION/git -l $TARGET_LOCATION
 
     cd $TARGET_LOCATION/mrs_uav_system && rm -rf build
 
     apt-get -y autoremove
     apt-get -y clean
 
-    # create internal .bashrc
-    touch $TARGET_LOCATION/singularity_bashrc.sh
-    chmod +x $TARGET_LOCATION/singularity_bashrc.sh
-
     # Beware! The indentation in the following block has to be done with real <tab>
-    cat <<- EOF > $TARGET_LOCATION/singularity_bashrc.sh
+    cat <<- EOF > /.singularity.d/env/99-mrs_env.sh
 			#!/bin/bash
 
-			if [ -e /opt/mrs/host/singularity_rcfile.sh ]; then
-				echo "Sourcing singularity_rcfile.sh from mrs_singularity/mount/singularity_rcfile.sh"
-				source "/opt/mrs/host/singularity_rcfile.sh"
-			fi
+			echo "sourcing env/99-mrs_env.sh start"
 
+			# create /tmp tmux folder
+			USER_ID=$( id -u )
+			[ ! -e tmp/tmux-$USER_ID ] && mkdir -p /tmp/tmux-$USER_ID
+
+			# link bash and zsh rc files
+			[ ! -e ~/.bashrc ] && ln -s $TARGET_LOCATION/host/singularity_bashrc.sh ~/.bashrc
+			[ ! -e ~/.zshrc ] && ln -s $TARGET_LOCATION/host/singularity_zshrc.sh ~/.zshrc
+
+			# link .tmux.conf
+			[ ! -e ~/.tmux.conf ] && ln -s $TARGET_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ~/.tmux.conf
+
+			export PS1="[MRS Singularity]\w \$ "
+
+			export TERM='xterm-256color'
+
+			echo "sourcing env/99-mrs_env.sh finished"
 		EOF
 
 %environment
@@ -49,10 +57,12 @@ From: ros:noetic
     export LC_ALL=C
 
 %runscript
+  echo "%runscript started"
 
-  if [ -z $1 ]; then
-    exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh
+  if [ -z "$@" ]; then
+    exec /bin/bash -i
   else
-    CMD="${@}"
-    exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh -c "${CMD}"
+    exec /bin/bash -i -c "$@"
   fi
+
+  echo "%runscript finished"

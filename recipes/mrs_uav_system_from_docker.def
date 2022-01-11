@@ -2,7 +2,6 @@ Bootstrap: docker
 From: ctumrs/mrs_uav_system
 
 %post
-
     apt-get -y update
 
     # fix prompts during installation
@@ -13,54 +12,42 @@ From: ctumrs/mrs_uav_system
     apt-get -y install git vim ranger zsh
 
     TARGET_LOCATION=/opt/mrs
-
-    # create internal .bashrc
-    touch $TARGET_LOCATION/singularity_bashrc.sh
-    chmod +x $TARGET_LOCATION/singularity_bashrc.sh
-
-    # Beware! The indentation in the following block has to be done with real <tab>
-    cat <<- EOF > $TARGET_LOCATION/singularity_bashrc.sh
-			#!/bin/bash
-
-			if [ -e /opt/mrs/host/singularity_bashrc.sh ]; then
-				echo "Sourcing singularity_bashrc.sh from mrs_singularity/mount/singularity_bashrc.sh"
-				source "/opt/mrs/host/singularity_bashrc.sh"
-			fi
-
-		EOF
+    mkdir -p $TARGET_LOCATION
 
     # Beware! The indentation in the following block has to be done with real <tab>
     cat <<- EOF > /.singularity.d/env/99-mrs_env.sh
 			#!/bin/bash
 
-			echo "sourcing custom env start"
+			echo "sourcing env/99-mrs_env.sh start"
 
 			# create /tmp tmux folder
 			USER_ID=$( id -u )
-			[ ! -e "/tmp/tmux-$USER_ID" ] && mkdir -p "/tmp/tmux-$USER_ID"
+			[ ! -e tmp/tmux-$USER_ID ] && mkdir -p /tmp/tmux-$USER_ID
 
 			# link bash and zsh rc files
-			[ ! -e "$HOME/.bashrc" ] && ln -s /opt/mrs/host/singularity_bashrc.sh $HOME/.bashrc
-			[ ! -e "$HOME/.zshrc" ] && ln -s /opt/mrs/host/singularity_zshrc.sh $HOME/.zshrc
+			[ ! -e ~/.bashrc ] && ln -s $TARGET_LOCATION/host/singularity_bashrc.sh ~/.bashrc
+			[ ! -e ~/.zshrc ] && ln -s $TARGET_LOCATION/host/singularity_zshrc.sh ~/.zshrc
 
 			# link .tmux.conf
-			[ ! -e "$HOME/.tmux.conf" ] && ln -s /opt/mrs/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf $HOME/.tmux.conf
+			[ ! -e ~/.tmux.conf ] && ln -s $TARGET_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ~/.tmux.conf
 
-			echo "sourcing custom env finished"
+			export PS1="[MRS Singularity]\w \$ "
+
+			export TERM='xterm-256color'
+
+			echo "sourcing env/99-mrs_env.sh finished"
 		EOF
 
 %environment
-
     export LC_ALL=C
 
 %runscript
   echo "%runscript started"
 
-  if [ -z $1 ]; then
-    exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh
+  if [ -z "$@" ]; then
+    exec /bin/bash -i
   else
-    CMD="${@}"
-    exec /bin/bash --rcfile /opt/mrs/singularity_bashrc.sh -c "${CMD}"
+    exec /bin/bash -i -c "$@"
   fi
 
   echo "%runscript finished"
