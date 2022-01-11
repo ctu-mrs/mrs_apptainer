@@ -25,6 +25,7 @@ From: ctumrs/mrs_uav_system
     cd $LINUX_SETUP_LOCATION
     git clone https://github.com/klaxalk/linux-setup
     cd linux-setup
+    git checkout devel
     ./install.sh --unattended
 
     TARGET_LOCATION=/opt/mrs
