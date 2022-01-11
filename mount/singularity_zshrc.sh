@@ -7,8 +7,6 @@ source /opt/mrs/mrs_workspace/devel/setup.zsh
 # source the user_workspace, if it exists
 [ -e ~/user_ros_workspace/devel/setup.zsh ] && source ~/user_ros_workspace/devel/setup.zsh
 
-source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
-
 export ROS_DISTRO="noetic"
 export UAV_NAME="uav1"
 export NATO_NAME="" # lower-case name of the UAV frame {alpha, bravo, charlie, ...}
@@ -26,3 +24,13 @@ export SENSORS="" # {garmin_down, garmin_up, rplidar, realsense_front, terarange
 export WORLD_NAME="simulation" # e.g.: "simulation" <= mrs_general/config/world_simulation.yaml
 export MRS_STATUS="readme" # {readme, dynamics, balloon, avoidance, control_error, gripper}
 export LOGGER_DEBUG="false" # sets the ros console output level to debug
+
+# source uav_core from within the container
+source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
+
+# source the linux setup from within
+if [ -e /opt/klaxalk/git/linux-setup/appconfig/zsh/dotzshrc ]; then
+
+  source /opt/klaxalk/git/linux-setup/appconfig/zsh/dotzshrc
+
+fi
