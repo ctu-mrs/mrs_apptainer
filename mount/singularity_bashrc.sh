@@ -115,6 +115,9 @@ set -o vi
 
 source /opt/mrs/mrs_workspace/devel/setup.bash
 
+# source the user_workspace, if it exists
+[ -e ~/user_workspace/devel/setup.bash ] && source ~/workspace/devel/setup.bash
+
 source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_additions.sh
 
 export ROS_MASTER_URI=http://localhost:11311

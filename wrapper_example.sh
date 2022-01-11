@@ -18,20 +18,25 @@ MOUNT_PATH="$REPO_PATH/mount"
 # use <folder>/ for sandbox container
 CONTAINER_NAME="mrs_uav_system.sif"
 
-DEBUG=false                           # print stuff
+DEBUG=false # print stuff
 
-NVIDIA=false                           # use nvidia graphics natively
+NVIDIA=true # use nvidia graphics natively
 
-CONTAINED=true                        # do not mount host's $HOME
-DETACH_TMP=true                       # do not mount host's /tmp
-CLEAN_ENV=true                        # clean environment before runnning container
+CONTAINED=true  # do not mount host's $HOME
+DETACH_TMP=true # do not mount host's /tmp
+CLEAN_ENV=true  # clean environment before runnning container
 
 # mutually exclusive
-OVERLAY=false                         # load persistant overlay (initialize it with ./create_fs_overlay.sh)
-WRITABLE=false                         # run as --writable (works with --sandbox containers)
+OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
+WRITABLE=false # run as --writable (works with --sandbox containers)
 
+# definy what should be mounted from the host to the container
 MOUNTS=(
-  "type=bind,source=$MOUNT_PATH,destination=/opt/mrs/host" 
+  # mount the custom user workspace into the container
+  "type=bind,source=$HOME/user_workspace,destination=$REPO_PATH/user_ros_workspace"
+
+  # mount the MRS shell additions into the container, DO NOT MODIFY
+  "type=bind,source=$MOUNT_PATH,destination=/opt/mrs/host"
 )
 
 KEEP_ROOT_PRIVS=false                 # let root keep privileges in the container
