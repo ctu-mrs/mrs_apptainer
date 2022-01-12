@@ -10,7 +10,7 @@ Stage: linuxsetup
 
 # Docker Hub bootstrap - latest mrs_uav_system
 Bootstrap: docker
-From: ctumrs/mrs_uav_system:latest
+From: ctumrs/mrs_uav_system_modules:latest
 Stage: mrs
 
 # # local docker booststrap - mrs_uav_system
