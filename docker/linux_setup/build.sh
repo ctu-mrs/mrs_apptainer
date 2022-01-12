@@ -6,4 +6,4 @@ cd $MY_PATH
 
 wget https://raw.githubusercontent.com/klaxalk/linux-setup/master/Dockerfile
 
-docker build -t klaxalk/linux_setup:latest .
+docker build -t klaxalk/linux-setup:master .
