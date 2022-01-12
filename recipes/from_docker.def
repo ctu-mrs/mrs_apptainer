@@ -1,18 +1,22 @@
+# Docker Hub bootstrap - latest linux-setup
 Bootstrap: docker
-From: klaxalk/linux-setup:latest
+From: klaxalk/linux-setup:master
 Stage: linuxsetup
 
+# # local docker booststrap - linux-setup
+# bootstrap from local linux setup docker image
+# Bootstrap: docker-daemon
+# From: klaxalk/linux_setup:master
+
+# Docker Hub bootstrap - latest mrs_uav_system
 Bootstrap: docker
 From: ctumrs/mrs_uav_system:latest
 Stage: mrs
 
+# # local docker booststrap - mrs_uav_system
 # bootstrap from local machine
 # Bootstrap: docker-daemon
 # From: ctumrs/mrs_uav_system:latest
-
-# bootstrap from local linux setup docker image
-# Bootstrap: docker-daemon
-# From: klaxalk/linux_setup:latest
 
 %post
     apt-get -y update
@@ -27,10 +31,10 @@ Stage: mrs
     MRS_LOCATION=/opt/mrs
 
     # link configuration file for the MRS env
-    ln -s /$MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
+    ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
 
     # link configuration file for the linux-setup env
-    ln -s /$MRS_LOCATION/host/99-linux_setup_env.sh /.singularity.d/env/99-linux_setup_env.sh
+    ln -s $MRS_LOCATION/host/99-linux_setup_env.sh /.singularity.d/env/99-linux_setup_env.sh
 
 %environment
     export LC_ALL=C
