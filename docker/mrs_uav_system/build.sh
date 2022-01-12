@@ -7,3 +7,5 @@ cd $MY_PATH
 wget https://raw.githubusercontent.com/ctu-mrs/mrs_uav_system/master/Dockerfile
 
 docker build -t ctumrs/mrs_uav_system:latest .
+
+rm Dockerfile

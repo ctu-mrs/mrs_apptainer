@@ -1,17 +1,25 @@
 # MRS Singularity
 
-## How To
+## How to start
 
 1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
 2. (optional) Install Docker - [install/install_docker.sh](./install/install_docker.sh).
-3. Create Singularity image of the MRS UAV System - [scripts/build/from_docker.sh](scripts/build/from_docker.sh). _This can take up to 10 minutes, depending on your computer resources_.
+3. Create Singularity image of the MRS UAV System. _This can take up to 30 minutes, depending on your internet connection and computer resources_. This will download approx. 5 GB of data from the internet.
+
+| **build script**                                                                                 | **contains**                                                                                                                                                                   |
+|--------------------------------------------------------------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| [build/01_minimal/build.sh](build/01_minimal/build.sh)                                           | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system)                                                                                                                    |
+| [build/02_with_linux_setup/build.sh](build/02_with_linux_setup/build.sh)                         | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [linux-setup](https://github.com/klaxalk/linux-setup)                                                            |
+| [build/03_with_uav_modules/build.sh](build/03_with_uav_modules/build.sh)                         | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [UAV Modules](https://github.com/ctu-mrs/uav_modules)                                                            |
+| [build/04_with_linux_setup_uav_modules/build.sh](build/04_with_linux_setup_uav_modules/build.sh) | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [linux-setup](https://github.com/klaxalk/linux-setup) + [UAV Modules](https://github.com/ctu-mrs/uav_modules)    |
+
 4. Copy the [wrapper_example.sh](./wrapper_example.sh) (versioned example) into `wrapper.sh` (.gitignored). This will allow you to configure the wrapper for yourself.
-5. Run the Singularity container using the wrapper [wrapper.sh](./wrapper.sh)
+5. Run the Singularity container using the [wrapper.sh](./wrapper.sh) as
 ```bash
 ./wrapper.sh
 ```
 
-Now you should see the terminal prompt of the singularity image, similar to this:
+Now, you should see the terminal prompt of the singularity image, similar to this:
 ```bash
 [MRS Singularity] user@hostname:~$
 ```
@@ -22,25 +30,24 @@ You can test whether the MRS UAV System is operational by starting the [example 
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
 
-In order to compile your own software with the MRS UAV System dependencies, start by placing it into the `user_ros_workspace/src` folder of this repository.
-As an example, clone the [ctu-mrs/example_ros_packages](https://github.com/ctu-mrs/example_ros_packages) and update the submodules using [gitman](https://ctu-mrs.github.io/docs/software/gitman.html):
+In order to compile your own software with the MRS UAV System dependencies, start by placing your packages into the `user_ros_workspace/src` folder of this repository.
+As an example, let's clone the [ctu-mrs/example_ros_packages](https://github.com/ctu-mrs/example_ros_packages) and update the submodules using [gitman](https://ctu-mrs.github.io/docs/software/gitman.html):
 ```bash
 cd user_ros_workspace/src
 git clone https://github.com/ctu-mrs/example_ros_packages.git
-cd example_ros_packages
-gitman install
 ```
-This workspace folder is mounted into the container as `~/user_ros_workspace`.
+This host's computer folder is mounted into the container as `~/user_ros_workspace`.
 You can then run the singularity image, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
 ```bash
 [MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/
+[MRS Singularity] user@hostname:~$ gitman install
 [MRS Singularity] user@hostname:~$ catkin init
 [MRS Singularity] user@hostname:~$ catkin build
 ```
 This should compile your software.
 Although the workspace resides on your host computer, the software cannot be run by the host system.
-The catkin depencies point to the Container's paths.
-In order to run the sofware, go into the singularity container (`./wrapper.sh`) and run it through there.
+The dependencies are fullfilled by the container.
+In order to run the sofware, go into the singularity container (`./wrapper.sh`) and run the software through there.
 ```bash
 ./wrapper.sh
 [MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/example_ros_packages/tmux_scripts/waypoint_flie
@@ -49,7 +56,7 @@ In order to run the sofware, go into the singularity container (`./wrapper.sh`) 
 
 ## Default behavior
 
-* The [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) is cloned into `/opt/mrs/git/mrs_uav_system`.
+* The [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) is cloned into `/opt/mrs/git`.
 * The **mrs_workspace** is located in `/opt/mrs/mrs_workspace`.
 * The container is run **without** mounted the host's `$HOME`.
 * The container's `/tmp` is mounted into host's `/tmp/singularity_tmp`.
@@ -128,7 +135,7 @@ This allows you to be independent on the input container and recive updates.
 Building new container takes longer, therefore, finding out what you need to do is tedious.
 However, finding what actions you need to can can be done by modifying the container directly, see the maunal down below.
 
-### Modifying existing container
+### Modifying an existing container
 
 If you really need to add stuff to the container, you can do that by following these steps:
 
@@ -136,9 +143,9 @@ If you really need to add stuff to the container, you can do that by following t
 ```bash
 sudo singularity build --sandbox <final-container-directory> <input-file.sif>
 ```
-3. run with **WRITABLE** and **FAKEROOT**
-4. modify the container, install stuff, etc.
-5. convert back to `.sif`
+3. run `./wrapper.sh` with `WRITABLE=true` and `FAKEROOT=true`,
+4. modify the container, install stuff, etc.,
+5. convert back to `.sif`,
 ```bash
 sudo singularity build <output-file.sif> <input-container-directory/>
 ```
