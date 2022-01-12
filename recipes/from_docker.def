@@ -1,12 +1,12 @@
 # Docker Hub bootstrap - latest linux-setup
 Bootstrap: docker
-From: klaxalk/linux-setup:master
+From: klaxalk/linux-setup:latest
 Stage: linuxsetup
 
 # # local docker booststrap - linux-setup
 # bootstrap from local linux setup docker image
 # Bootstrap: docker-daemon
-# From: klaxalk/linux_setup:master
+# From: klaxalk/linux_setup:latest
 
 # Docker Hub bootstrap - latest mrs_uav_system
 Bootstrap: docker

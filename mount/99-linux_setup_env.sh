@@ -2,6 +2,7 @@
 
 # the following section links config files for Tomas's Linux Setup
 
+MRS_LOCATION=/opt/mrs
 LINUX_SETUP_LOCATION=/opt/klaxalk/git/linux-setup
 
 if [ -e $LINUX_SETUP_LOCATION ]; then
@@ -24,5 +25,8 @@ if [ -e $LINUX_SETUP_LOCATION ]; then
 
   # link ycm extra conf
   [ ! -e ~/.ycm_extra_conf.py ] && ln -s $LINUX_SETUP_LOCATION/appconfig/vim/dotycm_extra_conf.py ~/.ycm_extra_conf.py
+
+  # link .vim.rc additions
+  [ ! -e ~/.my.vimrc ] && ln -s $MRS_LOCATION/host/singularity_vimrc ~/.my.vimrc
 
 fi

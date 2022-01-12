@@ -14,9 +14,6 @@ USER_ID=$( id -u )
 # link .tmux.conf
 [ ! -e ~/.tmux.conf ] && [ -e $MRS_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ] && ln -s $MRS_LOCATION/mrs_workspace/src/uav_core/installation/dependencies/tmux/dottmux.conf ~/.tmux.conf
 
-# link .vim.rc additions
-[ ! -e ~/.my.vimrc ] && ln -s $MRS_LOCATION/host/singularity_vimrc ~/.my.vimrc
-
 touch ~/.sudo_as_admin_successful
 
 export PS1="[MRS Singularity] ${debian_chroot:+($debian_chroot)}\[\033[01;32m\]\u@\h\[\033[00m\]:\[\033[01;34m\]\w\[\033[00m\]\$ "
