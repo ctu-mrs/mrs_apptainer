@@ -20,8 +20,6 @@ CONTAINER_NAME="mrs_uav_system.sif"
 
 DEBUG=false # print stuff
 
-NVIDIA=true # use nvidia graphics natively
-
 CONTAINED=true  # do not mount host's $HOME
 DETACH_TMP=true # do not mount host's /tmp
 CLEAN_ENV=true  # clean environment before runnning container
@@ -100,7 +98,9 @@ else
   CLEAN_ENV_ARG=""
 fi
 
-if $NVIDIA; then
+NVIDIA_COUNT=$( lspci | grep -i -e "vga.*nvidia" | wc -l )
+
+if [ "$NVIDIA_COUNT" -ge "1" ]; then
   NVIDIA_ARG="--nv"
   $DEBUG && echo "Debug: using nvidia"
 else
