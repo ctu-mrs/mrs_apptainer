@@ -1,10 +1,5 @@
 #!/bin/bash
 
-set -e
-
-trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
-trap 'echo "$0: \"${last_command}\" command failed with exit code $?"' ERR
-
 # get the path to this script
 MY_PATH=`dirname "$0"`
 MY_PATH=`( cd "$MY_PATH" && pwd )`
@@ -15,9 +10,9 @@ sudo apt-get -y remove docker docker-engine docker.io containerd runc || echo "N
 
 ## | -------------------- pre-install setup ------------------- |
 
-sudo apt-get update
+sudo apt-get -y update
 
-sudo apt-get install \
+sudo apt-get -y install \
     ca-certificates \
     curl \
     gnupg \
@@ -36,4 +31,4 @@ echo \
 ## | ------------------ install docker engine ----------------- |
 
 sudo apt-get -y update
-sudo apt-get install docker-ce docker-ce-cli containerd.io
+sudo apt-get -y install docker-ce docker-ce-cli containerd.io
