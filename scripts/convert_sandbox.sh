@@ -11,7 +11,7 @@ IMAGES_PATH=$REPO_PATH/images
 ## | ------------------------ paths end ----------------------- |
 
 FROM_SANDBOX=true # set to false to reverse the direction
-IMAGE_NAME=testing
+IMAGE_NAME=mrs_uav_system
 
 ## | ------------------- do not modify below ------------------ |
 

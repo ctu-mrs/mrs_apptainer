@@ -2,10 +2,6 @@
 
 MRS_LOCATION=/opt/mrs
 
-# create /tmp tmux folder
-USER_ID=$( id -u )
-[ ! -e tmp/tmux-$USER_ID ] && mkdir -p /tmp/tmux-$USER_ID
-
 # link bash and zsh rc files
 [ ! -e ~/.bashrc ] &&  ln -s $MRS_LOCATION/host/singularity_bashrc.sh ~/.bashrc
 [ ! -e ~/.zshrc ] && ln -s $MRS_LOCATION/host/singularity_zshrc.sh ~/.zshrc
