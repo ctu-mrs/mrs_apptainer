@@ -10,12 +10,13 @@ IMAGES_PATH=$REPO_PATH/images
 
 ## | ------------------------ paths end ----------------------- |
 
-FROM_SANDBOX=true # set to false to reverse the direction
+TO_SANDBOX=true # set to false to reverse the direction
 IMAGE_NAME=mrs_uav_system
 
 ## | ------------------- do not modify below ------------------ |
 
-if $FROM_SANDBOX; then
+if $TO_SANDBOX; then
+  echo "building --sandbox image"
   sudo singularity build --sandbox $IMAGES_PATH/$IMAGE_NAME/ $IMAGES_PATH/$IMAGE_NAME.sif
 else
   sudo singularity build $IMAGES_PATH/$IMAGE_NAME.sif $IMAGES_PATH/$IMAGE_NAME/

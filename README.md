@@ -145,6 +145,14 @@ fi
 
 ## Installing additional stuff to existing .sif container
 
+### Creating persistent overlay
+
+TODO
+
+* create overlay [script]
+* start wrapper with `OVERLAY=TRUE`
+* run `./wrapper` with sudo to allow installing stuff
+
 ### Bootstraping into a new container
 
 **PROS**:
