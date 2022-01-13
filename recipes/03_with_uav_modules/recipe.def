@@ -1,6 +1,5 @@
 Bootstrap: docker
 From: ctumrs/mrs_uav_system_modules:latest
-Stage: mrs
 
 %post
     apt-get -y update
@@ -28,9 +27,3 @@ Stage: mrs
   else
     exec /bin/bash --login -c "${CMD}"
   fi
-
-%files from linuxsetup
-  /
-
-%files from mrs
-  /
