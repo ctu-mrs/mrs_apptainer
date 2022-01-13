@@ -14,7 +14,7 @@
 | [recipes/04_with_linux_setup_uav_modules/build.sh](recipes/04_with_linux_setup_uav_modules/build.sh) | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [linux-setup](https://github.com/klaxalk/linux-setup) + [UAV Modules](https://github.com/ctu-mrs/uav_modules) |
 
 4. Copy the [wrapper_example.sh](./wrapper_example.sh) (versioned example) into `wrapper.sh` (.gitignored). This will allow you to configure the wrapper for yourself.
-5. Run the Singularity container using the [wrapper.sh](./wrapper.sh) as
+5. Run the Singularity container by issuing:
 ```bash
 ./wrapper.sh
 ```
@@ -30,7 +30,7 @@ You can test whether the MRS UAV System is operational by starting the [example 
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
 
-In order to compile your own software with the MRS UAV System dependencies, start by placing your packages into the `user_ros_workspace/src` folder of this repository.
+In order to compile your own software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_singularity>/user_ros_workspace/src` folder of this repository.
 As an example, let's clone the [ctu-mrs/example_ros_packages](https://github.com/ctu-mrs/example_ros_packages) and update the submodules using [gitman](https://ctu-mrs.github.io/docs/software/gitman.html):
 ```bash
 cd user_ros_workspace/src
@@ -39,7 +39,7 @@ git clone https://github.com/ctu-mrs/example_ros_packages.git
 This host's computer folder is mounted into the container as `~/user_ros_workspace`.
 You can then run the singularity image, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
 ```bash
-[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/
+[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/example_ros_packages/
 [MRS Singularity] user@hostname:~$ gitman install
 [MRS Singularity] user@hostname:~$ catkin init
 [MRS Singularity] user@hostname:~$ catkin build
