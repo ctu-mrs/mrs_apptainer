@@ -15,7 +15,7 @@ if [ -e $LINUX_SETUP_LOCATION ]; then
   # link ranger
   [ ! -e ~/.config/ranger ] && mkdir -p ~/.config/ranger
 
-  [ ! -e ~/.config/ranger/rigle.conf ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/rigle.conf ~/.config/ranger/rigle.conf
+  [ ! -e ~/.config/ranger/rifle.conf ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/rifle.conf ~/.config/ranger/rifle.conf
 
   [ ! -e ~/.config/ranger/commands.py ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/commands.py ~/.config/ranger/commands.py
 

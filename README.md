@@ -121,6 +121,28 @@ Singularity recipes.
 
 Build script for the MRS UAV System docker image.
 
+## Mounting host's $HOME
+
+By default, the host's $HOME directory is not mounted.
+In order to mount the host's $HOME into the container, run the `./wrapper.sh` with `CONTAINED=false`.
+However, this will make the container's shells to source your own shell RC file.
+In order to make the container run with the internal ROS environment, put the following code snippet into your `.bashrc` and/or `.zshrc`.
+`<mrs_singularity>` stands for the path to where you have cloned this repository.
+
+**BASH**:
+```bash
+if [ -n "$SINGULARITY_NAME" ]; then
+  source <mrs_singularity>/mount/singularity_bashrc.sh
+fi
+```
+
+**ZSH**:
+```bash
+if [ -n "$SINGULARITY_NAME" ]; then
+  source <mrs_singularity>/mount/singularity_zshrc.sh
+fi
+```
+
 ## Installing additional stuff to existing .sif container
 
 ### Bootstraping into a new container
