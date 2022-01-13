@@ -20,7 +20,7 @@ CONTAINER_NAME="mrs_uav_system.sif"
 
 DEBUG=false # print stuff
 
-NVIDIA=false # use nvidia graphics natively
+NVIDIA=true # use nvidia graphics natively
 
 CONTAINED=true  # do not mount host's $HOME
 DETACH_TMP=true # do not mount host's /tmp
