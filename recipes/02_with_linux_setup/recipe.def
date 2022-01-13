@@ -2,6 +2,8 @@ Bootstrap: docker
 From: ctumrs/mrs_uav_system_ls:latest
 
 %post
+    apt-get -y install zsh
+
     MRS_LOCATION=/opt/mrs
 
     # link configuration file for the MRS env
