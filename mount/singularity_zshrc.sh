@@ -7,6 +7,8 @@ source /opt/mrs/mrs_workspace/devel/setup.zsh
 # source the user_workspace, if it exists
 [ -e ~/user_ros_workspace/devel/setup.zsh ] && source ~/user_ros_workspace/devel/setup.zsh
 
+export PROFILES="COLORSCHEME_DARK"
+
 export ROS_DISTRO="noetic"
 export UAV_NAME="uav1"
 export NATO_NAME="" # lower-case name of the UAV frame {alpha, bravo, charlie, ...}
