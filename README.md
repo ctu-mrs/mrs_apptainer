@@ -213,13 +213,13 @@ However, creating a custom recipe for modifying an already existing image is a m
 
 If you need to change the container (even removing files), you can do that by following these steps:
 
-1. convert it to the _sandbox_ container
+1. convert it to the _sandbox_ container ([./scripts/convert_sandbox.sh](./scripts/convert_sandbox.sh), `TO_SANBOX=true`):
 ```bash
 sudo singularity build --sandbox <final-container-directory> <input-file.sif>
 ```
 3. run `./wrapper.sh` with `WRITABLE=true` and `FAKEROOT=true`,
 4. modify the container, install stuff, etc.,
-5. convert back to `.sif`,
+5. convert back to `.sif`, ([./scripts/convert_sandbox.sh](./scripts/convert_sandbox.sh), `TO_SANBOX=false`):
 ```bash
 sudo singularity build <output-file.sif> <input-container-directory/>
 ```
