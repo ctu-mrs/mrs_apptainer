@@ -3,11 +3,11 @@
 ## How to start
 
 1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
-2. (optional) Install Docker - [install/install_docker.sh](./install/install_docker.sh).
+2. (**optional**) Install Docker - [install/install_docker.sh](./install/install_docker.sh). Docker is only needed if you intend to build the underlying docker image by hand.
 3. Create Singularity image of the MRS UAV System. _This can take up to 30 minutes, depending on your internet connection and computer resources_. This will download approx. 5 GB of data from the internet.
 
-| **build script**                                                                                                 | **contains**                                                                                                                                                                |
-|------------------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
+| **build script**                                                                                     | **contains**                                                                                                                                                                |
+|------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | [recipes/01_minimal/build.sh](recipes/01_minimal/build.sh)                                           | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system)                                                                                                                 |
 | [recipes/02_with_linux_setup/build.sh](recipes/02_with_linux_setup/build.sh)                         | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [linux-setup](https://github.com/klaxalk/linux-setup)                                                         |
 | [recipes/03_with_uav_modules/build.sh](recipes/03_with_uav_modules/build.sh)                         | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [UAV Modules](https://github.com/ctu-mrs/uav_modules)                                                         |
@@ -143,7 +143,7 @@ if [ -n "$SINGULARITY_NAME" ]; then
 fi
 ```
 
-## Installing additional stuff to existing .sif container
+## Installing additional stuff to existing container
 
 ### Creating persistent overlay
 
