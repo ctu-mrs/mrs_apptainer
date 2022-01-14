@@ -17,15 +17,13 @@ MOUNT_PATH="$REPO_PATH/mount"
 # use <file>.sif for normal container
 # use <folder>/ for sandbox container
 CONTAINER_NAME="mrs_uav_system.sif"
+OVERLAY_NAME="mrs_uav_system.img"
 
-DEBUG=false # print stuff
-
-CONTAINED=true  # do not mount host's $HOME
-DETACH_TMP=true # do not mount host's /tmp
+CONTAINED=true  # do NOT mount host's $HOME
 CLEAN_ENV=true  # clean environment before runnning container
 
 # mutually exclusive
-OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
+OVERLAY=true  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
 WRITABLE=false # run as --writable (works with --sandbox containers)
 
 # definy what should be mounted from the host to the container
@@ -37,8 +35,11 @@ MOUNTS=(
   "type=bind,source=$MOUNT_PATH,destination=/opt/mrs/host"
 )
 
-KEEP_ROOT_PRIVS=false                 # let root keep privileges in the container
-FAKEROOT=false                        # run as superuser
+# not supposed to be changed by a normal user
+DEBUG=false # print stuff
+KEEP_ROOT_PRIVS=false # let root keep privileges in the container
+FAKEROOT=false        # run as superuser
+DETACH_TMP=true       # do NOT mount host's /tmp
 
 ## | --------------------- user config end -------------------- |
 
@@ -52,12 +53,12 @@ CONTAINER_PATH=$IMAGES_PATH/$CONTAINER_NAME
 
 if $OVERLAY; then
 
-  if [ ! -e $OVERLAYS_PATH/overlay.img ]; then
+  if [ ! -e $OVERLAYS_PATH/$OVERLAY_NAME ]; then
     echo "Overlay file does not exist, initialize it with the 'create_fs_overlay.sh' script"
     exit 1
   fi
 
-  OVERLAY_ARG="-o $OVERLAYS_PATH/overlay.img"
+  OVERLAY_ARG="-o $OVERLAYS_PATH/$OVERLAY_NAME"
   $DEBUG && echo "Debug: using overlay"
 else
   OVERLAY_ARG=""
