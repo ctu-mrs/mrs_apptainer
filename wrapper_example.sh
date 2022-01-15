@@ -19,8 +19,8 @@ MOUNT_PATH="$REPO_PATH/mount"
 CONTAINER_NAME="mrs_uav_system.sif"
 OVERLAY_NAME="mrs_uav_system.img"
 
-CONTAINED=true  # do NOT mount host's $HOME
-CLEAN_ENV=true  # clean environment before runnning container
+CONTAINED=true # do NOT mount host's $HOME
+CLEAN_ENV=true # clean environment before runnning container
 
 # mutually exclusive
 OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
@@ -36,7 +36,7 @@ MOUNTS=(
 )
 
 # not supposed to be changed by a normal user
-DEBUG=false # print stuff
+DEBUG=false           # print stuff
 KEEP_ROOT_PRIVS=false # let root keep privileges in the container
 FAKEROOT=false        # run as superuser
 DETACH_TMP=true       # do NOT mount host's /tmp
