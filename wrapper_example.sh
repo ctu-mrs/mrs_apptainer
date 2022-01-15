@@ -23,7 +23,7 @@ CONTAINED=true  # do NOT mount host's $HOME
 CLEAN_ENV=true  # clean environment before runnning container
 
 # mutually exclusive
-OVERLAY=true  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
+OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
 WRITABLE=false # run as --writable (works with --sandbox containers)
 
 # definy what should be mounted from the host to the container
