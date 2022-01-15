@@ -145,6 +145,7 @@ fi
 # create tmp folder for singularity in host's tmp
 [ ! -e /tmp/singularity_tmp ] && mkdir -p /tmp/singularity_tmp
 
+# this will make the singularity to "export DISPLAY=:0"
 export SINGULARITYENV_DISPLAY=:0
 
 $EXEC_CMD singularity $ACTION \
