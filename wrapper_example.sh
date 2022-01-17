@@ -20,7 +20,7 @@ CONTAINER_NAME="mrs_uav_system.sif"
 OVERLAY_NAME="mrs_uav_system.img"
 
 CONTAINED=true # do NOT mount host's $HOME
-CLEAN_ENV=true # clean environment before runnning container
+CLEAN_ENV=false # clean environment before runnning container
 
 # mutually exclusive
 OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
