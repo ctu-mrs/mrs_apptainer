@@ -72,7 +72,7 @@ To run the software, go into the singularity container (`./wrapper.sh`) and run 
 
 ## Choosing the source docker image version
 
-The possible source images are provided via [Docker HUB](https://hub.docker.com/orgs/ctumrs/repositories).
+The possible source images are provided via [Docker HUB](https://hub.docker.com/u/ctumrs).
 Each image is available with the tag `:latest` (used by default), containing an up-to-date nightly build.
 Additional tags are used to archive images by the week number in the current year: `:<year>_w<week>`.
 Change the tag in the used **recipe** file as needed.
