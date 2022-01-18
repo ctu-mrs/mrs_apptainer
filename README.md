@@ -30,7 +30,7 @@ Moreover, the following benefits arise when using Singularity containers:
 | [recipes/03_with_uav_modules/build.sh](recipes/03_with_uav_modules/build.sh)                         | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [UAV Modules](https://github.com/ctu-mrs/uav_modules)                                                         |
 | [recipes/04_with_linux_setup_uav_modules/build.sh](recipes/04_with_linux_setup_uav_modules/build.sh) | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [linux-setup](https://github.com/klaxalk/linux-setup) + [UAV Modules](https://github.com/ctu-mrs/uav_modules) |
 
-4. Copy the [wrapper_example.sh](./wrapper_example.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself.
+4. Copy the [example_wrapper.sh](./example_wrapper.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself.
 5. Run the Singularity container by issuing:
 ```bash
 ./wrapper.sh
