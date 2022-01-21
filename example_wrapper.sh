@@ -106,7 +106,7 @@ else
 fi
 
 NVIDIA_COUNT_1=$( lspci | grep -i -e "vga.*nvidia" | wc -l )
-NVIDIA_COUNT_2=$( nvidia-smi -L | grep -i "gpu" | wc -l )
+NVIDIA_COUNT_2=$( command -v nvidia-smi >> /dev/null 2>&1 && (nvidia-smi -L | grep -i "gpu" | wc -l) || echo 0 )
 
 if [ "$NVIDIA_COUNT_1" -ge "1" ] || [ "$NVIDIA_COUNT_2" -ge "1" ]; then
   NVIDIA_ARG="--nv"
