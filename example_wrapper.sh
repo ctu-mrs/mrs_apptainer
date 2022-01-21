@@ -105,11 +105,12 @@ else
   CLEAN_ENV_ARG=""
 fi
 
-NVIDIA_COUNT=$( lspci | grep -i -e "vga.*nvidia" | wc -l )
+NVIDIA_COUNT_1=$( lspci | grep -i -e "vga.*nvidia" | wc -l )
+NVIDIA_COUNT_2=$( nvidia-smi -L | grep -i "gpu" | wc -l )
 
-if [ "$NVIDIA_COUNT" -ge "1" ]; then
+if [ "$NVIDIA_COUNT_1" -ge "1" ] || [ "$NVIDIA_COUNT_2" -ge "1" ]; then
   NVIDIA_ARG="--nv"
-  $DEBUG && echo "Debug: using nvidia"
+  $DEBUG && echo "Debug: using nvidia (nvidia counts: $NVIDIA_COUNT_1, $NVIDIA_COUNT_2)"
 else
   NVIDIA_ARG=""
 fi
