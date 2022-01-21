@@ -1,5 +1,10 @@
 #!/bin/bash
 
+set -e
+
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+trap 'echo "$0: \"${last_command}\" command failed with exit code $?"' ERR
+
 ## | ------------------- configure the paths ------------------ |
 
 # Change these when moving the script and the folders around
@@ -27,12 +32,13 @@ OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay
 WRITABLE=false # run as --writable (works with --sandbox containers)
 
 # definy what should be mounted from the host to the container
+# [TYPE], [SOURCE (host)], [DESTINATION (container)]
 MOUNTS=(
   # mount the custom user workspace into the container
-  "type=bind,source=$REPO_PATH/user_ros_workspace,destination=$HOME/user_ros_workspace"
+  "type=bind" "$REPO_PATH/user_ros_workspace" "$HOME/user_ros_workspace"
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
-  "type=bind,source=$MOUNT_PATH,destination=/opt/mrs/host"
+  "type=bind" "$MOUNT_PATH" "/opt/mrs/host"
 )
 
 # not supposed to be changed by a normal user
@@ -124,14 +130,23 @@ fi
 
 MOUNT_ARG=""
 if ! $WRITABLE; then
-  for ((i=0; i < ${#MOUNTS[*]}; i++)); do
-    MOUNT_ARG="$MOUNT_ARG --mount ${MOUNTS[$i]}"
+
+  # prepare the mounting points, resolve the full paths
+  for ((i=0; i < ${#MOUNTS[*]}; i++));
+  do
+    ((i%3==0)) && TYPE[$i/3]="${MOUNTS[$i]}"
+    ((i%3==1)) && SOURCE[$i/3]=$( realpath -e "${MOUNTS[$i]}" )
+    ((i%3==2)) && DESTINATION[$i/3]=$( realpath -m "${MOUNTS[$i]}" )
+  done
+
+  for ((i=0; i < ${#TYPE[*]}; i++)); do
+    MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
   done
 fi
 
 if [[ "$ACTION" == "run" ]]; then
-  shift
-  CMD="'$@'"
+  [ ! -z "$@" ] && shift
+  CMD="$@"
 elif [[ $ACTION == "exec" ]]; then
   shift
   CMD="'/bin/bash -c \"${@}\"'"
