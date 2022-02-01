@@ -89,7 +89,7 @@ Change the tag in the used **recipe** file as needed.
 
 ```
 .
-├── Docker
+├── docker
 ├── images
 ├── install
 ├── mount
@@ -98,17 +98,17 @@ Change the tag in the used **recipe** file as needed.
 ├── recipes
 ├── scripts
 ├── user_ros_workspace
-└── wrapper.sh
+└── example_wrapper.sh
 ```
 
 <details>
 <summary>>>> Click to expand <<<</summary>
 
-### wrapper.sh
+### example_wrapper.sh
 
-The main Singularity wrapper script.
+Example of our singularity wrapper script.
 Use this to start our image.
-The script contains a _user configuration section_, please.
+The script contains a _user configuration section_.
 
 ### scripts
 
