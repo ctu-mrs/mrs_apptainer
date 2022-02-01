@@ -1,7 +1,10 @@
 Bootstrap: docker
+# Bootstrap: docker-daemon
 From: ctumrs/mrs_uav_system_ls:latest
 
 %post
+    apt-get -y update
+
     apt-get -y install zsh
 
     MRS_LOCATION=/opt/mrs
