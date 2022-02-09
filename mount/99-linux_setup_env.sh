@@ -23,6 +23,8 @@ if [ -e $LINUX_SETUP_LOCATION ]; then
 
   [ ! -e ~/.config/ranger/scope.sh ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/scope.sh ~/.config/ranger/scope.sh
 
+  [ ! -e ~/.scripts ] && ln -s $LINUX_SETUP_LOCATION/scripts ~/.scripts
+
   # link ycm extra conf
   [ ! -e ~/.ycm_extra_conf.py ] && ln -s $LINUX_SETUP_LOCATION/appconfig/vim/dotycm_extra_conf.py ~/.ycm_extra_conf.py
 
