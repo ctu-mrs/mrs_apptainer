@@ -24,8 +24,8 @@ MOUNT_PATH="$REPO_PATH/mount"
 CONTAINER_NAME="mrs_uav_system.sif"
 OVERLAY_NAME="mrs_uav_system.img"
 
-CONTAINED=true # do NOT mount host's $HOME
-CLEAN_ENV=true # clean environment before runnning container
+CONTAINED=true # isolate home?
+CLEAN_ENV=true # clean shell environment before runnning container
 
 # mutually exclusive
 OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
@@ -71,7 +71,7 @@ else
 fi
 
 if $CONTAINED; then
-  CONTAINED_ARG="-c"
+  CONTAINED_ARG="--home /tmp/singularity/home"
   $DEBUG && echo "Debug: running as contained"
 else
   CONTAINED_ARG=""
@@ -116,7 +116,7 @@ else
 fi
 
 if $DETACH_TMP; then
-  TMP_PATH="/tmp/singularity_tmp"
+  TMP_PATH="/tmp/singularity/tmp"
   DETACH_TMP_ARG="--bind $TMP_PATH:/tmp"
   $DEBUG && echo "Debug: detaching tmp from the host"
 else
@@ -159,7 +159,8 @@ else
 fi
 
 # create tmp folder for singularity in host's tmp
-[ ! -e /tmp/singularity_tmp ] && mkdir -p /tmp/singularity_tmp
+[ ! -e /tmp/singularity/tmp ] && mkdir -p /tmp/singularity/tmp
+[ ! -e /tmp/singularity/home ] && mkdir -p /tmp/singularity/home
 
 # this will make the singularity to "export DISPLAY=:0"
 export SINGULARITYENV_DISPLAY=:0

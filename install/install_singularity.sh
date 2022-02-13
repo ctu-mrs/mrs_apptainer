@@ -61,7 +61,7 @@ fi
 
 cd /tmp
 
-export VERSION=3.9.2
+export VERSION=3.9.5
 wget https://github.com/sylabs/singularity/releases/download/v${VERSION}/singularity-ce-${VERSION}.tar.gz
 tar -xzf singularity-ce-${VERSION}.tar.gz
 cd singularity-ce-${VERSION}
