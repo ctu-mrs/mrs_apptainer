@@ -71,7 +71,7 @@ else
 fi
 
 if $CONTAINED; then
-  CONTAINED_ARG="--home /tmp/singularity/home"
+  CONTAINED_ARG="--home /tmp/singularity/home:/home/$USER"
   $DEBUG && echo "Debug: running as contained"
 else
   CONTAINED_ARG=""
