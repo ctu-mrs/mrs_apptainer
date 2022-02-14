@@ -11,7 +11,6 @@ else
       exit "$?"
       ;;
   esac
-  source ~/."$SNAME"rc
 fi
 
 RCFILE=~/."$SNAME"rc
@@ -56,6 +55,8 @@ export PATH=/usr/local/go/bin:$PATH' >> $RCFILE
 
   source $RCFILE
 fi
+
+export PATH="/usr/local/go/bin:$PATH"
 
 ## | ------------------- install singularity ------------------ |
 
