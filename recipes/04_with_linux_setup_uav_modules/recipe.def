@@ -1,5 +1,5 @@
-# Bootstrap: docker
-Bootstrap: docker-daemon
+Bootstrap: docker
+# Bootstrap: docker-daemon
 From: ctumrs/mrs_uav_system_ls_modules:latest
 
 %post
