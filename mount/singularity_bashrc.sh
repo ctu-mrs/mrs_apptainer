@@ -113,7 +113,23 @@ fi
 
 set -o vi
 
-source /opt/mrs/mrs_workspace/devel/setup.bash
+if [ -e /opt/mrs/modules_workspace ]; then
+
+  if [ -e /opt/mrs/modules_workspace/install/setup.bash ]; then
+    source /opt/mrs/modules_workspace/install/setup.bash
+  else
+    source /opt/mrs/modules_workspace/devel/setup.bash
+  fi
+
+elif [ -e /opt/mrs/mrs_workspace ]; then
+
+  if [ -e /opt/mrs/mrs_workspace/install/setup.bash ]; then
+    source /opt/mrs/mrs_workspace/install/setup.bash
+  else
+    source /opt/mrs/mrs_workspace/devel/setup.bash
+  fi
+
+fi
 
 # source the user_workspace, if it exists
 [ -e ~/user_ros_workspace/devel/setup.bash ] && source ~/user_ros_workspace/devel/setup.bash
