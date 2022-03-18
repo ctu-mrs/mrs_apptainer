@@ -47,7 +47,7 @@ You can test whether the MRS UAV System is operational by starting the [example 
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
 
-To compile your software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_singularity>/user_ros_workspace/src` folder of this repository.
+6. To compile your software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_singularity>/user_ros_workspace/src` folder of this repository.
 As an example, let's clone the [ctu-mrs/example_ros_packages](https://github.com/ctu-mrs/example_ros_packages) and update the submodules using [gitman](https://ctu-mrs.github.io/docs/software/gitman.html):
 ```bash
 cd user_ros_workspace/src
