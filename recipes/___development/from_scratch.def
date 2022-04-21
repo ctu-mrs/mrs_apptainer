@@ -46,7 +46,9 @@ From: ros:noetic
   CMD="${@}"
 
   if [ -z "${CMD}" ]; then
-    exec /bin/bash --login
+    /bin/bash --login
   else
-    exec /bin/bash --login -c "${CMD}"
+    /bin/bash --login -c "${CMD}"
   fi
+
+  exit 0

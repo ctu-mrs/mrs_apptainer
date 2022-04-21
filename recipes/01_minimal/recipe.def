@@ -19,7 +19,9 @@ From: ctumrs/mrs_uav_system:latest
   CMD="${@}"
 
   if [ -z "${CMD}" ]; then
-    exec /bin/bash --login
+    /bin/bash --login
   else
-    exec /bin/bash --login -c "${CMD}"
+    /bin/bash --login -c "${CMD}"
   fi
+
+  exit 0
