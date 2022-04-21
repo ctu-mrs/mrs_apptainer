@@ -7,6 +7,9 @@ source /opt/mrs/mrs_workspace/devel/setup.zsh
 # source the user_workspace, if it exists
 [ -e ~/user_ros_workspace/devel/setup.zsh ] && source ~/user_ros_workspace/devel/setup.zsh
 
+[ -z "$ROS_PORT" ] && export ROS_PORT=11311
+[ -z "$ROS_MASTER_URI" ] && export ROS_MASTER_URI=http://localhost:$ROS_PORT
+
 export PROFILES="COLORSCHEME_DARK"
 
 export ROS_DISTRO="noetic"
