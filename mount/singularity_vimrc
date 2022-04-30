@@ -1,2 +1,9 @@
-colorscheme jellybeans
-let g:airline_theme='jellybeans'
+" Explanation:
+" the linux-setup is not initialized with any cusomized "PROFILE", so the
+" colorscheme is se to the fallback (any-color) colorscheme
+"
+" this .vimrc additions are used to override the colorscheme without modifying
+" any internal files
+
+" colorscheme jellybeans
+" let g:airline_theme='jellybeans'

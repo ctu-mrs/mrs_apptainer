@@ -137,7 +137,6 @@ fi
 export ROS_PORT=11311
 
 export ROS_MASTER_URI=http://localhost:$ROS_PORT
-export ROS_IP=127.0.0.1
 
 export PROFILES="COLORSCHEME_DARK"
 
