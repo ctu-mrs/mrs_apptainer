@@ -17,7 +17,7 @@ IMAGE_NAME=mrs_uav_system
 
 if $TO_SANDBOX; then
   echo "building --sandbox image"
-  sudo singularity build --sandbox $IMAGES_PATH/$IMAGE_NAME/ $IMAGES_PATH/$IMAGE_NAME.sif
+  singularity build --fakeroot --sandbox $IMAGES_PATH/$IMAGE_NAME/ $IMAGES_PATH/$IMAGE_NAME.sif
 else
-  sudo singularity build $IMAGES_PATH/$IMAGE_NAME.sif $IMAGES_PATH/$IMAGE_NAME/
+  singularity build --fakeroot $IMAGES_PATH/$IMAGE_NAME.sif $IMAGES_PATH/$IMAGE_NAME/
 fi

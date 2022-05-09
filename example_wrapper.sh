@@ -7,15 +7,19 @@ trap 'echo "$0: \"${last_command}\" command failed with exit code $?"' ERR
 
 ## | ------------------- configure the paths ------------------ |
 
-# Change these when moving the script and the folders around
+# Change the following paths when moving the script and the folders around
 
-# get the path to the repository
-REPO_PATH=`dirname "$0"`
-REPO_PATH=`( cd "$REPO_PATH" && pwd )`
+# get the path to the current directory
+MRS_SINGULARITY_PATH=`dirname "$0"`
+MRS_SINGULARITY_PATH=`( cd "$MRS_SINGULARITY_PATH" && pwd )`
 
-IMAGES_PATH="$REPO_PATH/images"
-OVERLAYS_PATH="$REPO_PATH/overlays"
-MOUNT_PATH="$REPO_PATH/mount"
+# alternatively, set it directly
+# MRS_SINGULARITY_PATH=$HOME/git/mrs_singularity
+
+# define paths to the subfolders
+IMAGES_PATH="$MRS_SINGULARITY_PATH/images"
+OVERLAYS_PATH="$MRS_SINGULARITY_PATH/overlays"
+MOUNT_PATH="$MRS_SINGULARITY_PATH/mount"
 
 ## | ----------------------- user config ---------------------- |
 
@@ -24,28 +28,31 @@ MOUNT_PATH="$REPO_PATH/mount"
 CONTAINER_NAME="mrs_uav_system.sif"
 OVERLAY_NAME="mrs_uav_system.img"
 
-CONTAINED=true # isolate home?
-CLEAN_ENV=true # clean shell environment before runnning container
+CONTAINED=true  # true: will isolate from the HOST's home
+CLEAN_ENV=false # true: will clean the shell environment before runnning container
 
-# mutually exclusive
-OVERLAY=false  # load persistant overlay (initialize it with ./create_fs_overlay.sh)
-WRITABLE=false # run as --writable (works with --sandbox containers)
+# the following are mutually exclusive
+OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
+WRITABLE=false # true: will run it as --writable (works with --sandbox containers, image can be converted with scripts/convert_sandbox.sh)
 
 # definy what should be mounted from the host to the container
 # [TYPE], [SOURCE (host)], [DESTINATION (container)]
 MOUNTS=(
   # mount the custom user workspace into the container
-  "type=bind" "$REPO_PATH/user_ros_workspace" "$HOME/user_ros_workspace"
+  #                  HOST PATH          CONTAINER PATH
+  "type=bind" "$MRS_SINGULARITY_PATH/user_ros_workspace" "$HOME/user_ros_workspace"
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
   "type=bind" "$MOUNT_PATH" "/opt/mrs/host"
 )
 
+## | ------------------ advanced user config ------------------ |
+
 # not supposed to be changed by a normal user
-DEBUG=false           # print stuff
-KEEP_ROOT_PRIVS=false # let root keep privileges in the container
-FAKEROOT=false        # run as superuser
-DETACH_TMP=true       # do NOT mount host's /tmp
+DEBUG=false           # true: print the singularity command instead of running it
+KEEP_ROOT_PRIVS=false # true: let root keep privileges in the container
+FAKEROOT=false        # true: run as superuser
+DETACH_TMP=true       # true: do NOT mount host's /tmp
 
 ## | --------------------- user config end -------------------- |
 
@@ -143,6 +150,7 @@ if ! $WRITABLE; then
   for ((i=0; i < ${#TYPE[*]}; i++)); do
     MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
   done
+
 fi
 
 if [[ "$ACTION" == "run" ]]; then
