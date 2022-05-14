@@ -72,8 +72,11 @@ To run the software, go into the singularity container (`./wrapper.sh`) and run 
 
 The possible source images are provided via [Docker HUB](https://hub.docker.com/u/ctumrs).
 Each image is available with the tag `:latest` (used by default), containing an up-to-date nightly build.
-Additional tags are used to archive images by the week number in the current year: `:<year>_w<week>`.
-Change the tag in the used **recipe** file as needed.
+Additional tags are used to archive images few weeks back by the week number in the current year: `:<year>_w<week>`.
+Change the tag in your selected **recipe** file as needed.
+Additional tags point to significant version increments of the system:
+
+* [MRS UAV System v1.0.3](https://hub.docker.com/layers/mrs_uav_system_ls_modules/ctumrs/mrs_uav_system_ls_modules/1.0.3/images/sha256-4e9ced96d2dfd7f6eeeda0213249ca3ffac10fd793e7c8d5c972549612e95e39?context=explore) was created on 2022-05-10 after the MRS camp. Most of the software was well-tested and already stable before the camp.
 
 ## Default behavior
 
