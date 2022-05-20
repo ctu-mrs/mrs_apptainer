@@ -170,8 +170,8 @@ fi
 [ ! -e /tmp/singularity/tmp ] && mkdir -p /tmp/singularity/tmp
 [ ! -e /tmp/singularity/home ] && mkdir -p /tmp/singularity/home
 
-# this will make the singularity to "export DISPLAY=:0"
-export SINGULARITYENV_DISPLAY=:0
+# this will set $DISPLAY in the container to the same value as on your host machine
+export SINGULARITYENV_DISPLAY=$DISPLAY
 
 $EXEC_CMD singularity $ACTION \
   $NVIDIA_ARG \
