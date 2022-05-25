@@ -54,10 +54,11 @@ git clone https://github.com/ctu-mrs/example_ros_packages.git
 This host's computer folder is mounted into the container as `~/user_ros_workspace`.
 You can then run the singularity image, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
 ```bash
-[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/example_ros_packages/
-[MRS Singularity] user@hostname:~$ gitman install
-[MRS Singularity] user@hostname:~$ catkin init
-[MRS Singularity] user@hostname:~$ catkin build
+[MRS Singularity]$ cd ~/user_ros_workspace/src/example_ros_packages/
+[MRS Singularity]$ gitman install
+[MRS Singularity]$ cd ~/user_ros_workspace/
+[MRS Singularity]$ catkin init
+[MRS Singularity]$ catkin build
 ```
 Although the workspace resides on your host computer, the software cannot be run by the host system.
 The container fulfills the dependencies.
