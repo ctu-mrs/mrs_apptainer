@@ -49,7 +49,7 @@ MOUNTS=(
 ## | ------------------ advanced user config ------------------ |
 
 # not supposed to be changed by a normal user
-DEBUG=false           # true: print the singularity command instead of running it
+DEBUG=true           # true: print the singularity command instead of running it
 KEEP_ROOT_PRIVS=false # true: let root keep privileges in the container
 FAKEROOT=false        # true: run as superuser
 DETACH_TMP=true       # true: do NOT mount host's /tmp
@@ -112,9 +112,11 @@ else
   CLEAN_ENV_ARG=""
 fi
 
+# there are multiple ways of detecting that you are running nVidia graphics:
 NVIDIA_COUNT_1=$( lspci | grep -i -e "vga.*nvidia" | wc -l )
 NVIDIA_COUNT_2=$( command -v nvidia-smi >> /dev/null 2>&1 && (nvidia-smi -L | grep -i "gpu" | wc -l) || echo 0 )
 
+# if we have nvidia, add the "--nv" arg
 if [ "$NVIDIA_COUNT_1" -ge "1" ] || [ "$NVIDIA_COUNT_2" -ge "1" ]; then
   NVIDIA_ARG="--nv"
   $DEBUG && echo "Debug: using nvidia (nvidia counts: $NVIDIA_COUNT_1, $NVIDIA_COUNT_2)"
@@ -147,9 +149,18 @@ if ! $WRITABLE; then
     ((i%3==2)) && DESTINATION[$i/3]=$( realpath -m "${MOUNTS[$i]}" )
   done
 
-  for ((i=0; i < ${#TYPE[*]}; i++)); do
-    MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
-  done
+  # detect if the installed singularity uses the new --mount commnad
+  singularity_help_mount=$( singularity run --help | grep -e "--mount" | wc -l )
+
+  if [ "$singularity_help_mount" -ge "1" ]; then
+    for ((i=0; i < ${#TYPE[*]}; i++)); do
+      MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
+    done
+  else
+    for ((i=0; i < ${#TYPE[*]}; i++)); do
+      MOUNT_ARG="$MOUNT_ARG --bind ${SOURCE[$i]}:${DESTINATION[$i]}"
+    done
+  fi
 
 fi
 
