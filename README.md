@@ -17,7 +17,26 @@ Moreover, the following benefits arise when using Singularity containers:
 * With the `$HOME` mounted, the programs running inside the container can use your host's computer config files.
 * Running GUI applications is much more straightforward: it just works.
 
-## Quick Start Guide
+# Prerequisities
+
+MRS Singularity will run on the following operating systems
+
+* Linux
+* Windows 10 (up-to-date), windows 11
+  * requires WSL instaled
+  * <details>
+    <summary>>>> Installation quick guide <<<</summary>
+      * Install WSL (`wsl --install` in power shell). 
+      * Install "Ubuntu 20.04" using the Microsoft Store. 
+      * Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/) (that is an X-server client for Windows... to see the windows from within Ubuntu) 
+      * Run the Terminal from the start menu and launch a new terminal with Ubuntu 20.04
+      * The server should be started by running: `vcxsrv.exe -ac -multiwindow`
+      * `sudo apt update && sudo apt upgrade && sudo apt install gedit` (installing gedit is just one way to force it to install x-server-related stuff. Maybe there is a better way.) 
+      * run gedit to verify that GUI will show up
+      * follow this README further to build a singularity image, alternatively, you can copy the image from, e.g., an external hard drive. (in WSL Linux, run `explorer.exe .` which will allow you to copy data between Windows and Linux
+    </details>
+
+## Quick Start Guide (Linux)
 
 1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
 2. (**optional**) Install Docker - [install/install_docker.sh](./install/install_docker.sh). Docker is only needed if you intend to build the underlying docker image by hand.
