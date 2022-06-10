@@ -112,9 +112,11 @@ else
   CLEAN_ENV_ARG=""
 fi
 
+# there are multiple ways of detecting that you are running nVidia graphics:
 NVIDIA_COUNT_1=$( lspci | grep -i -e "vga.*nvidia" | wc -l )
 NVIDIA_COUNT_2=$( command -v nvidia-smi >> /dev/null 2>&1 && (nvidia-smi -L | grep -i "gpu" | wc -l) || echo 0 )
 
+# if we have nvidia, add the "--nv" arg
 if [ "$NVIDIA_COUNT_1" -ge "1" ] || [ "$NVIDIA_COUNT_2" -ge "1" ]; then
   NVIDIA_ARG="--nv"
   $DEBUG && echo "Debug: using nvidia (nvidia counts: $NVIDIA_COUNT_1, $NVIDIA_COUNT_2)"
@@ -147,9 +149,18 @@ if ! $WRITABLE; then
     ((i%3==2)) && DESTINATION[$i/3]=$( realpath -m "${MOUNTS[$i]}" )
   done
 
-  for ((i=0; i < ${#TYPE[*]}; i++)); do
-    MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
-  done
+  # detect if the installed singularity uses the new --mount commnad
+  singularity_help_mount=$( singularity run --help | grep -e "--mount" | wc -l )
+
+  if [ "$singularity_help_mount" -ge "1" ]; then
+    for ((i=0; i < ${#TYPE[*]}; i++)); do
+      MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
+    done
+  else
+    for ((i=0; i < ${#TYPE[*]}; i++)); do
+      MOUNT_ARG="$MOUNT_ARG --bind ${SOURCE[$i]}:${DESTINATION[$i]}"
+    done
+  fi
 
 fi
 
@@ -170,8 +181,8 @@ fi
 [ ! -e /tmp/singularity/tmp ] && mkdir -p /tmp/singularity/tmp
 [ ! -e /tmp/singularity/home ] && mkdir -p /tmp/singularity/home
 
-# this will make the singularity to "export DISPLAY=:0"
-export SINGULARITYENV_DISPLAY=:0
+# this will set $DISPLAY in the container to the same value as on your host machine
+export SINGULARITYENV_DISPLAY=$DISPLAY
 
 $EXEC_CMD singularity $ACTION \
   $NVIDIA_ARG \
