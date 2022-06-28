@@ -56,6 +56,12 @@ DETACH_TMP=true       # true: do NOT mount host's /tmp
 
 ## | --------------------- user config end -------------------- |
 
+# check whether we are already in tmux
+if [ -n "$TMUX" ]; then
+  echo "You are probably in a TMUX session. Exit the tmux session first please."
+  exit 1
+fi
+
 if [ -z "$1" ]; then
   ACTION="run"
 else
