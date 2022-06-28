@@ -10,11 +10,11 @@ MY_PATH=`( cd "$MY_PATH" && pwd )`
 
 ## | ------------------- configure versions ------------------- |
 
-export SINGULARITY_VERSION=3.10.0
-export GO_VERSION=1.18
+# export SINGULARITY_VERSION=3.10.0
+# export GO_VERSION=1.18
 
-# export SINGULARITY_VERSION=3.9.5
-# export GO_VERSION=1.17
+export SINGULARITY_VERSION=3.9.5
+export GO_VERSION=1.17
 
 ## | ----------------- install pre-requisities ---------------- |
 
