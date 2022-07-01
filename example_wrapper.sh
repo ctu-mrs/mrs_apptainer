@@ -175,7 +175,7 @@ if [[ "$ACTION" == "run" ]]; then
   CMD="$@"
 elif [[ $ACTION == "exec" ]]; then
   shift
-  CMD="'/bin/bash -c \"${@}\"'"
+  CMD="/bin/bash -c '${@}'"
 elif [[ $ACTION == "shell" ]]; then
   CMD=""
 else
