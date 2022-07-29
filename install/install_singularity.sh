@@ -29,7 +29,8 @@ sudo apt-get install -y \
     wget \
     pkg-config \
     git \
-    cryptsetup
+    cryptsetup \
+    libglib2.0-dev
 
 ## | ----------------------- install Go ----------------------- |
 
