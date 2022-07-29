@@ -39,8 +39,8 @@ WRITABLE=false # true: will run it as --writable (works with --sandbox container
 # [TYPE], [SOURCE (host)], [DESTINATION (container)]
 MOUNTS=(
   # mount the custom user workspace into the container
-  #                  HOST PATH          CONTAINER PATH
-  "type=bind" "$MRS_SINGULARITY_PATH/user_ros_workspace" "$HOME/user_ros_workspace"
+  #                  HOST PATH                                    CONTAINER PATH
+  "type=bind" "$MRS_SINGULARITY_PATH/user_ros_workspace" "/home/$USER/user_ros_workspace"
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
   "type=bind" "$MOUNT_PATH" "/opt/mrs/host"
