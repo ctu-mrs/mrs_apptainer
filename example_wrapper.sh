@@ -31,6 +31,8 @@ OVERLAY_NAME="mrs_uav_system.img"
 CONTAINED=true  # true: will isolate from the HOST's home
 CLEAN_ENV=true # true: will clean the shell environment before runnning container
 
+USE_NVIDIA=false # true: will tell Singularity that it should use nvidia graphics. Does not work every time.
+
 # the following are mutually exclusive
 OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
 WRITABLE=false # true: will run it as --writable (works with --sandbox containers, image can be converted with scripts/convert_sandbox.sh)
@@ -118,14 +120,9 @@ else
   CLEAN_ENV_ARG=""
 fi
 
-# there are multiple ways of detecting that you are running nVidia graphics:
-NVIDIA_COUNT_1=$( lspci | grep -i -e "vga.*nvidia" | wc -l )
-NVIDIA_COUNT_2=$( command -v nvidia-smi >> /dev/null 2>&1 && (nvidia-smi -L | grep -i "gpu" | wc -l) || echo 0 )
-
-# if we have nvidia, add the "--nv" arg
-if [ "$NVIDIA_COUNT_1" -ge "1" ] || [ "$NVIDIA_COUNT_2" -ge "1" ]; then
+# if we want nvidia, add the "--nv" arg
+if $USE_NVIDIA; then
   NVIDIA_ARG="--nv"
-  $DEBUG && echo "Debug: using nvidia (nvidia counts: $NVIDIA_COUNT_1, $NVIDIA_COUNT_2)"
 else
   NVIDIA_ARG=""
 fi

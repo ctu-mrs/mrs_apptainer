@@ -173,6 +173,16 @@ Singularity recipes.
 Contains a build script for the MRS UAV System docker image.
 </details>
 
+## Enabling nVidia graphics`
+
+Edit the parameter (false -> true)
+```bash
+USE_NVIDIA
+```
+in the `wrapper.sh` script to enable nVidia graphics integration.
+Beware, it is not guaranteed to work on all systems.
+Typical issues revolve around the `version 'GLIBC_2.34' not found` error.
+
 ## Mounting host's $HOME
 
 The host's `$HOME` directory is not mounted by default.
