@@ -164,7 +164,7 @@ source /opt/mrs/mrs_workspace/src/uav_core/miscellaneous/shell_additions/shell_a
 
 # if host pc is not Ubuntu 20.04
 OS_INFO=$(cat /proc/version)
-if ! ([[ "$INFO_OS" == *"Ubuntu"* ]] && [[ "$INFO_OS" == *"20.04"* ]]);th>
+if ! ([[ "$INFO_OS" == *"Ubuntu"* ]] && [[ "$INFO_OS" == *"20.04"* ]]); then
   export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
   source /usr/share/gazebo/setup.bash
 fi
