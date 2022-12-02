@@ -11,24 +11,35 @@ From: ros:noetic
 
     apt-get -y install git vim ranger zsh
 
-    MRS_LOCATION=/opt/mrs
+    export MRS_LOCATION=/opt/mrs
+    export DOCKER=true
+
     mkdir -p $MRS_LOCATION
 
-    LINUX_SETUP_LOCATION=/opt/klaxalk/git
-    mkdir -p $LINUX_SETUP_LOCATION
-    cd $LINUX_SETUP_LOCATION
-    git clone https://github.com/klaxalk/linux-setup
-    cd linux-setup
-    git checkout devel
-    ./install.sh --unattended --minimal
+    # LINUX_SETUP_LOCATION=/opt/klaxalk/git
+    # mkdir -p $LINUX_SETUP_LOCATION
+    # cd $LINUX_SETUP_LOCATION
+    # git clone https://github.com/klaxalk/linux-setup
+    # cd linux-setup
+    # git checkout devel
+    # ./install.sh --unattended --minimal
 
     # clone uav_core
     mkdir -p $MRS_LOCATION/git
     cd $MRS_LOCATION/git
     git clone https://github.com/ctu-mrs/mrs_uav_system
     cd mrs_uav_system
-    git checkout general_installation
-    ./install.sh -g $MRS_LOCATION/git -l $MRS_LOCATION
+    ./install.sh -g $MRS_LOCATION/git -l $MRS_LOCATION --no-build --my-workspace=false
+    rm -rf /var/lib/apt/lists/*
+    cd $MRS_LOCATION/mrs_workspace/
+    catkin config --install
+    catkin build --limit-status-rate 0.2 --summarize
+    rm -rf $MRS_LOCATION/mrs_workspace/build
+    rm -rf $MRS_LOCATION/mrs_workspace/devel
+    rm -rf $MRS_LOCATION/git/uav_core/.gitman
+    rm -rf $MRS_LOCATION/git/simulation/.gitman
+    sudo apt-get -y autoremove
+    rm -rf /var/lib/apt/lists/*
 
     apt-get -y autoremove
     apt-get -y clean
