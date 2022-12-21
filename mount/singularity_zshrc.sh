@@ -34,7 +34,7 @@ export ROS_WORKSPACES="$ROS_WORKSPACES /opt/mrs/mrs_workspace ~/user_ros_workspa
 
 # if host pc is not Ubuntu 20.04
 OS_INFO=$(cat /proc/version)
-if ! ([[ "$INFO_OS" == *"Ubuntu"* ]] && [[ "$INFO_OS" == *"20.04"* ]]); then
+if ! ([[ "$OS_INFO" == *"Ubuntu"* ]] && [[ "$OS_INFO" == *"20.04"* ]]); then
   export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
   source /usr/share/gazebo/setup.bash
 fi
