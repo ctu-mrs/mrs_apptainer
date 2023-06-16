@@ -13,8 +13,11 @@ MY_PATH=`( cd "$MY_PATH" && pwd )`
 # export SINGULARITY_VERSION=3.10.0
 # export GO_VERSION=1.18
 
-export SINGULARITY_VERSION=3.9.5
-export GO_VERSION=1.17
+# export SINGULARITY_VERSION=3.9.5
+# export GO_VERSION=1.17
+
+export SINGULARITY_VERSION=3.11.3
+export GO_VERSION=1.20.5
 
 ## | ----------------- install pre-requisities ---------------- |
 
@@ -72,6 +75,9 @@ if $INSTALL_GO; then
   export OS=linux
   export ARCH=amd64  # Replace the values as needed
   wget https://dl.google.com/go/go$GO_VERSION.$OS-$ARCH.tar.gz
+  # delete old go version
+  sudo rm -rf /usr/local/go
+  # unpack new version
   sudo tar -C /usr/local -xzvf go$GO_VERSION.$OS-$ARCH.tar.gz
   rm go$GO_VERSION.$OS-$ARCH.tar.gz
 
