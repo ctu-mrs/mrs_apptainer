@@ -31,6 +31,7 @@ MRS Singularity will run on the following operating systems
       * Install "Ubuntu 20.04" using the Microsoft Store.
       * Download and install [VcXsrv](https://sourceforge.net/projects/vcxsrv/) (that is an X-server client for Windows... to see the windows from within Ubuntu)
       * Run the Terminal from the start menu and launch a new terminal with Ubuntu 20.04
+      * **Update**: It might be necessary to export the `$DISPLAY` variable inside the container. Follow, e.g., this manual here [link](https://stackoverflow.com/questions/61860208/running-graphical-linux-desktop-applications-from-wsl-2-error-e233-cannot-op). Exporting the variable should be done using the `.bashrc` file, which is located in `mrs_singularity/mount/singularity_bashrc.sh`.
       * The server should be started by running: `vcxsrv.exe -ac -multiwindow`
       * `sudo apt update && sudo apt upgrade && sudo apt install gedit` (installing gedit is just one way to force it to install x-server-related stuff. Maybe there is a better way.)
       * run gedit to verify that GUI will show up
