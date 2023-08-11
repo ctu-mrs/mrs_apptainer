@@ -1,6 +1,6 @@
 Bootstrap: docker
-# From: klaxalk/linux-setup:master
-From: ubuntu:20.04
+From: klaxalk/linux-setup:master
+# From: ubuntu:20.04
 
 %post
 
