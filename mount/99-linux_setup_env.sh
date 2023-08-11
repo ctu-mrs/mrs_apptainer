@@ -12,6 +12,9 @@ if [ -e $LINUX_SETUP_LOCATION ]; then
 
   [ ! -e ~/.vimrc ] && ln -s $LINUX_SETUP_LOCATION/appconfig/vim/dotvimrc ~/.vimrc
 
+  # link tmux conf
+  [ ! -e ~/.tmux.conf ] && ln -s $LINUX_SETUP_LOCATION/appconfig/tmux/dottmux.conf ~/.tmux.conf
+
   # link ranger
   [ ! -e ~/.config/ranger ] && mkdir -p ~/.config/ranger
 
