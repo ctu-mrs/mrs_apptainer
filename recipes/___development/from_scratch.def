@@ -1,10 +1,12 @@
 Bootstrap: docker
-From: klaxalk/linux-setup:master
+# From: klaxalk/linux-setup:master
+From: ubuntu:20.04
 
 %post
 
     # fix prompts during installation
     apt-get -y update
+    apt-get -y install sudo
     echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
     sudo apt-get install -y -q
     DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
