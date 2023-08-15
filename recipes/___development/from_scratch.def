@@ -1,4 +1,6 @@
-Bootstrap: docker
+B    apt-get -y install wget vim ranger
+
+ootstrap: docker
 From: klaxalk/linux-setup:master
 # From: ubuntu:20.04
 
@@ -17,7 +19,7 @@ From: klaxalk/linux-setup:master
     curl https://ctu-mrs.github.io/ppa-unstable/add_ros_ppa.sh | bash
     curl https://ctu-mrs.github.io/ppa-unstable/add_ppa.sh | bash
 
-    apt-get -y install ros-noetic-ros-desktop-full ros-noetic-mrs-uav-system
+    apt-get -y install ros-noetic-desktop-full ros-noetic-mrs-uav-system
 
     # link configuration file for the MRS env
     ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
