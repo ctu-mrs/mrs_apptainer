@@ -1,6 +1,6 @@
 Bootstrap: docker
-# Bootstrap: docker-daemon
-From: ctumrs/mrs_uav_system:latest
+# Bootstrap: docker-daemon */
+From: klaxalk/linux-setup:latest
 
 %post
     apt-get -y update

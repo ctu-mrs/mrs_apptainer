@@ -11,15 +11,13 @@ From: klaxalk/linux-setup:master
     sudo apt-get install -y -q
     DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
 
-    apt-get -y install wget vim ranger
-
     export MRS_LOCATION=/opt/mrs
     mkdir -p $MRS_LOCATION
 
-    wget -O - https://raw.githubusercontent.com/ctu-mrs/ci_scripts/master/package_build/add_ros_ppa.sh | bash
-    wget -O - https://raw.githubusercontent.com/ctu-mrs/ci_scripts/master/package_build/add_ctu_mrs_unstable_ppa.sh | bash
+    curl https://ctu-mrs.github.io/ppa-unstable/add_ros_ppa.sh | bash
+    curl https://ctu-mrs.github.io/ppa-unstable/add_ppa.sh | bash
 
-    apt-get -y install ros-noetic-ros-base ros-noetic-mrs-uav-system
+    apt-get -y install ros-noetic-ros-desktop-full ros-noetic-mrs-uav-system
 
     # link configuration file for the MRS env
     ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
