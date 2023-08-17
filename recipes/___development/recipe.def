@@ -1,6 +1,5 @@
-B    apt-get -y install wget vim ranger
-
-ootstrap: docker
+Bootstrap: docker
+# Bootstrap: docker-daemon
 From: klaxalk/linux-setup:master
 # From: ubuntu:20.04
 
