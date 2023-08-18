@@ -15,6 +15,8 @@ From: klaxalk/linux-setup:master
     export MRS_LOCATION=/opt/mrs
     mkdir -p $MRS_LOCATION
 
+    sudo apt-get -y install curl
+
     curl https://ctu-mrs.github.io/ppa-unstable/add_ros_ppa.sh | bash
     curl https://ctu-mrs.github.io/ppa-unstable/add_ppa.sh | bash
 
