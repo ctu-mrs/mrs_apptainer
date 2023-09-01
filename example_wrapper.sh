@@ -31,7 +31,7 @@ OVERLAY_NAME="mrs_uav_system.img"
 CONTAINED=true  # true: will isolate from the HOST's home
 CLEAN_ENV=true # true: will clean the shell environment before runnning container
 
-USE_NVIDIA=true # true: will tell Singularity that it should use nvidia graphics. Does not work every time.
+USE_NVIDIA=false # true: will tell Singularity that it should use nvidia graphics. Does not work every time.
 
 # the following are mutually exclusive
 OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
