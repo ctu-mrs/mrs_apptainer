@@ -18,9 +18,10 @@ From: klaxalk/linux-setup:master
     sudo apt-get -y install curl
 
     curl https://ctu-mrs.github.io/ppa-unstable/add_ros_ppa.sh | bash
-    curl https://ctu-mrs.github.io/ppa-unstable/add_ppa.sh | bash
+    apt-get -y install ros-noetic-desktop-full
 
-    apt-get -y install ros-noetic-desktop-full ros-noetic-mrs-uav-system
+    curl https://ctu-mrs.github.io/ppa-unstable/add_ppa.sh | bash
+    apt-get -y install ros-noetic-mrs-uav-system-full
 
     # link configuration file for the MRS env
     ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
