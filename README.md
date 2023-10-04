@@ -259,3 +259,8 @@ sudo singularity build --sandbox <final-container-directory> <input-file.sif>
 ```bash
 sudo singularity build <output-file.sif> <input-container-directory/>
 ```
+
+# Troubleshooting
+If you encounter "No loop devices available" problem while running singularity:
+ * first try to update singularity to the newest version and reboot your machine,
+ * if this does not help, please add "GRUB_CMDLINE_LINUX="max_loop=256" into /etc/default/grub and reboot your machine.
