@@ -54,7 +54,7 @@ MOUNTS=(
 DEBUG=false           # true: print the singularity command instead of running it
 KEEP_ROOT_PRIVS=false # true: let root keep privileges in the container
 FAKEROOT=false        # true: run as superuser
-DETACH_TMP=false       # true: do NOT mount host's /tmp
+DETACH_TMP=true       # true: do NOT mount host's /tmp
 
 ## | --------------------- user config end -------------------- |
 
