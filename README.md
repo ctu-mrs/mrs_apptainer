@@ -45,8 +45,8 @@ MRS Singularity will run on the following operating systems
 
 | **build script**                                       | **description**                                                           |
 |--------------------------------------------------------|---------------------------------------------------------------------------|
+| [recipes/stable/build.sh](recipes/stable/build.sh)     | installs from the [stable PPA](https://github.com/ctu-mrs/ppa-stable)     |
 | [recipes/unstable/build.sh](recipes/unstable/build.sh) | installs from the [unstable PPA](https://github.com/ctu-mrs/ppa-unstable) |
-| [recipes/stable/build.sh](recipes/stable/build.sh)     | installs from the [unstable PPA](https://github.com/ctu-mrs/ppa-unstable) |
 
 3. Copy the [example_wrapper.sh](./example_wrapper.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself.
 4. Run the Singularity container by issuing:
