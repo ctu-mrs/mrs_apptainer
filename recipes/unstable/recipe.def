@@ -1,7 +1,7 @@
 Bootstrap: docker
 # Bootstrap: docker-daemon
-From: klaxalk/linux-setup:master
-# From: ubuntu:20.04
+From: ubuntu:20.04
+# From: klaxalk/linux-setup:master
 
 %post
 
@@ -12,9 +12,6 @@ From: klaxalk/linux-setup:master
     sudo apt-get install -y -q
     DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
 
-    export MRS_LOCATION=/opt/mrs
-    mkdir -p $MRS_LOCATION
-
     sudo apt-get -y install curl
 
     curl https://ctu-mrs.github.io/ppa-unstable/add_ros_ppa.sh | bash
@@ -22,6 +19,10 @@ From: klaxalk/linux-setup:master
 
     curl https://ctu-mrs.github.io/ppa-unstable/add_ppa.sh | bash
     apt-get -y install ros-noetic-mrs-uav-system-full
+
+    # location for the singularity files
+    export MRS_LOCATION=/opt/mrs
+    mkdir -p $MRS_LOCATION
 
     # link configuration file for the MRS env
     ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh

@@ -8,7 +8,6 @@ Moreover, the following benefits arise when using Singularity containers:
 * The provided image will run across Ubuntu versions. You run, e.g., our ROS Noetic-based image on the 18.04 host system.
 * The provided image can be backed up easily by copy-and-pasting a single file.
 * The provided image can be altered and saved again, allowing you to store our system's particular configuration for later testing.
-* The provided image is based on our [Docker](https://docs.docker.com/get-started/overview/) images, which can also be backup up individually.
 
 **Why Singularity and not just Docker?**
 
@@ -22,7 +21,7 @@ Moreover, the following benefits arise when using Singularity containers:
 MRS Singularity will run on the following operating systems
 
 * Linux
-* Windows 10 (up-to-date), windows 11
+* Windows 10, windows 11
   * requires WSL instaled
   * <details>
     <summary>>>> Installation quick guide <<<</summary>
@@ -42,17 +41,15 @@ MRS Singularity will run on the following operating systems
 ## Quick Start Guide (Linux)
 
 1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
-2. (**optional**) Install Docker - [install/install_docker.sh](./install/install_docker.sh). Docker is only needed if you intend to build the underlying docker image by hand.
-3. Create a Singularity image of the MRS UAV System. _This can take up to 30 minutes, depending on your internet connection and computer resources_. You will download approx. 5 GB of data from the internet.
+2. Create a Singularity image of the MRS UAV System. _This can take up to 30 minutes, depending on your internet connection and computer resources_.
 
-| **build script**                                                                                     | **contains**                                                                                                                                                                |
-|------------------------------------------------------------------------------------------------------|-----------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
-| [recipes/01_minimal/build.sh](recipes/01_minimal/build.sh)                                           | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system)                                                                                                                 |
-| [recipes/02_with_linux_setup/build.sh](recipes/02_with_linux_setup/build.sh)                         | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [linux-setup](https://github.com/klaxalk/linux-setup)                                                         |
-| [recipes/03_with_uav_modules/build.sh](recipes/03_with_uav_modules/build.sh)                         | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [UAV Modules](https://github.com/ctu-mrs/uav_modules)                                                         |
-| [recipes/04_with_linux_setup_uav_modules/build.sh](recipes/04_with_linux_setup_uav_modules/build.sh) | [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) + [linux-setup](https://github.com/klaxalk/linux-setup) + [UAV Modules](https://github.com/ctu-mrs/uav_modules) |
-4. Copy the [example_wrapper.sh](./example_wrapper.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself.
-5. Run the Singularity container by issuing:
+| **build script**                                       | **description**                                                           |
+|--------------------------------------------------------|---------------------------------------------------------------------------|
+| [recipes/unstable/build.sh](recipes/unstable/build.sh) | installs from the [unstable PPA](https://github.com/ctu-mrs/ppa-unstable) |
+| [recipes/stable/build.sh](recipes/stable/build.sh)     | installs from the [unstable PPA](https://github.com/ctu-mrs/ppa-unstable) |
+
+3. Copy the [example_wrapper.sh](./example_wrapper.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself.
+4. Run the Singularity container by issuing:
 ```bash
 ./wrapper.sh
 ```
@@ -62,22 +59,21 @@ Now, you should see the terminal prompt of the singularity image, similar to thi
 [MRS Singularity] user@hostname:~$
 ```
 
-You can test whether the MRS UAV System is operational by starting the [example simulation session](https://ctu-mrs.github.io/docs/simulation/howto.html).
+You can test whether the MRS UAV System is operational by starting the [example Gazebo simulation session](https://ctu-mrs.github.io/docs/simulation/gazebo/gazebo/howto.html).
 ```bash
-[MRS Singularity] user@hostname:~$ cd /opt/mrs/git/simulation/example_tmux_scripts/one_drone_gps
+[MRS Singularity] user@hostname:~$ roscd mrs_uav_gazebo_simulation/tmux/one_drone
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
-6. To compile your software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_singularity>/user_ros_workspace/src` folder of this repository.
-As an example, let's clone the [ctu-mrs/example_ros_packages](https://github.com/ctu-mrs/example_ros_packages) and update the submodules using [gitman](https://ctu-mrs.github.io/docs/software/gitman.html):
+5. To compile your software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_singularity>/user_ros_workspace/src` folder of this repository.
+As an example, let's clone the [Example Tracker Plugin](https://github.com/ctu-mrs/example_tracker_plugin).
 ```bash
 cd user_ros_workspace/src
-git clone https://github.com/ctu-mrs/example_ros_packages.git
+git clone https://github.com/ctu-mrs/example_tracker_plugin.git
 ```
 This host's computer folder is mounted into the container as `~/user_ros_workspace`.
 You can then run the singularity image, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
 ```bash
-[MRS Singularity]$ cd ~/user_ros_workspace/src/example_ros_packages/
-[MRS Singularity]$ gitman install
+[MRS Singularity]$ cd ~/user_ros_workspace/src/example_tracker_plugin/
 [MRS Singularity]$ cd ~/user_ros_workspace/
 [MRS Singularity]$ catkin init
 [MRS Singularity]$ catkin build
@@ -87,27 +83,12 @@ The container fulfills the dependencies.
 To run the software, go into the singularity container (`./wrapper.sh`) and run the software through there.
 ```bash
 ./wrapper.sh
-[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/example_ros_packages/tmux_scripts/waypoint_flie
+[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/examle_tracker_plugin/tmux
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
 
-## Choosing the source docker image version
-
-The possible source images are provided via [Docker HUB](https://hub.docker.com/u/ctumrs).
-Each image is available with the tag `:latest` (used by default), containing an up-to-date nightly build.
-Additional tags are used to archive images few weeks back by the week number in the current year: `:<year>_w<week>`.
-Change the tag in your selected **recipe** file as needed.
-Additional tags point to significant version increments of the system:
-
-* [MRS UAV System v1.0.4](https://hub.docker.com/layers/ctumrs/mrs_uav_system_ls_modules/1.0.4/images/sha256-3d6ee1052495806315d12d0704c2ba3230fda0d5745d6c9594d2e03c54ca89a6?context=explore) was created on 2023-01-23 before moving to a newer version of PX4 and Mavros.
-
-* [MRS UAV System v1.0.3](https://hub.docker.com/layers/mrs_uav_system_ls_modules/ctumrs/mrs_uav_system_ls_modules/1.0.3/images/sha256-4e9ced96d2dfd7f6eeeda0213249ca3ffac10fd793e7c8d5c972549612e95e39?context=explore) was created on 2022-05-10 after the MRS camp. Most of the software was well-tested and already stable before the camp.
-
 ## Default behavior
 
-* The [MRS UAV System](https://github.com/ctu-mrs/mrs_uav_system) is cloned into `/opt/mrs/git`.
-* The [Linux-setup](https://github.com/klaxalk/linux-setup) is cloned into `/opt/klaxalk/git` (**optional**).
-* The **mrs_workspace** is located in `/opt/mrs/mrs_workspace`.
 * The container is run **without** mounting the host's `$HOME`.
 * The container's `/tmp` is mounted into host's `/tmp/singularity_tmp`.
 
@@ -115,7 +96,6 @@ Additional tags point to significant version increments of the system:
 
 ```
 .
-├── docker
 ├── images
 ├── install
 ├── mount
@@ -170,10 +150,6 @@ Place for Singularity overlay images (.gitignored).
 ### recipes
 
 Singularity recipes.
-
-### docker
-
-Contains a build script for the MRS UAV System docker image.
 </details>
 
 ## Enabling nVidia graphics`
@@ -261,6 +237,7 @@ sudo singularity build <output-file.sif> <input-container-directory/>
 ```
 
 # Troubleshooting
+
 If you encounter "No loop devices available" problem while running singularity:
  * first try to update singularity to the newest version and reboot your machine,
  * if this does not help, please add "GRUB_CMDLINE_LINUX="max_loop=256" into /etc/default/grub and reboot your machine.
