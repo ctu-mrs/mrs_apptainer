@@ -54,7 +54,7 @@ MRS Singularity will run on the following operating systems
 ./wrapper.sh
 ```
 
-Now, you should see the terminal prompt of the singularity image, similar to this:
+Now, you should see the terminal prompt of the singularity container, similar to this:
 ```bash
 [MRS Singularity] user@hostname:~$
 ```
@@ -71,18 +71,17 @@ cd user_ros_workspace/src
 git clone https://github.com/ctu-mrs/example_tracker_plugin.git
 ```
 This host's computer folder is mounted into the container as `~/user_ros_workspace`.
-You can then run the singularity image, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
+You can then run the singularity container, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
 ```bash
-[MRS Singularity]$ cd ~/user_ros_workspace/src/example_tracker_plugin/
+./wrapper.sh
 [MRS Singularity]$ cd ~/user_ros_workspace/
 [MRS Singularity]$ catkin init
 [MRS Singularity]$ catkin build
 ```
 Although the workspace resides on your host computer, the software cannot be run by the host system.
 The container fulfills the dependencies.
-To run the software, go into the singularity container (`./wrapper.sh`) and run the software through there.
+To start the software, do so from within the container:
 ```bash
-./wrapper.sh
 [MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/examle_tracker_plugin/tmux
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
@@ -113,7 +112,7 @@ To run the software, go into the singularity container (`./wrapper.sh`) and run 
 ### example_wrapper.sh
 
 Example of our singularity wrapper script.
-Use this to start our image.
+Use this to start our container.
 The script contains a _user configuration section_.
 
 ### scripts
@@ -238,6 +237,17 @@ sudo singularity build <output-file.sif> <input-container-directory/>
 
 # Troubleshooting
 
-If you encounter "No loop devices available" problem while running singularity:
+## General runtime problems
+
+If something is behaving strangly, it might be because your `$HOME` within the container is somehow corrupted.
+The first go-to solution is to clean the container's `HOME` and `TMP`.
+These folders are located in `/tmp/singularity` of your machine.
+```bash
+rm -rf /tmp/singularity
+```
+
+## No loop devices available
+
+If you encounter "**No loop devices available**" problem while running singularity:
  * first try to update singularity to the newest version and reboot your machine,
- * if this does not help, please add "GRUB_CMDLINE_LINUX="max_loop=256" into /etc/default/grub and reboot your machine.
+ * if this does not help, please add `GRUB_CMDLINE_LINUX="max_loop=256"` into `/etc/default/grub` and reboot your machine.
