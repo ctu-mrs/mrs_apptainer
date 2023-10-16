@@ -41,7 +41,7 @@ MRS Singularity will run on the following operating systems
 ## Quick Start Guide (Linux)
 
 1. Install Singularity - [install/install_singularity.sh](./install/install_singularity.sh).
-2. Create a Singularity image of the MRS UAV System. _This can take up to 30 minutes, depending on your internet connection and computer resources_.
+2. Create a Singularity image of the MRS UAV System. _This should take up to 15 minutes, depending on your internet connection and computer resources_.
 
 | **build script**                                       | **description**                                                           |
 |--------------------------------------------------------|---------------------------------------------------------------------------|
@@ -84,6 +84,28 @@ To start the software, do so from within the container:
 ```bash
 [MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/examle_tracker_plugin/tmux
 [MRS Singularity] user@hostname:~$ ./start.sh
+```
+
+## Tailoring the recipes to your needs
+
+Feel free to change the recipe to your needs and  install additional software:
+
+You can select whether you want to bootstrap form a fresh ROS image, or from Tomas's [linux setup](https://github.com/klaxalk/linux-setup) image:
+```yaml
+From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
+# From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
+```
+
+You can add additional commands **at the and** of the `%post` section.
+For example, add the following code block for installing Visual Studio Code:
+```bash
+# install visual studio code
+# takeon from https://code.visualstudio.com/docs/setup/linux
+cd /tmp
+wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+rm -f packages.microsoft.gpg
 ```
 
 ## Default behavior
@@ -228,12 +250,17 @@ If you need to change the container (even removing files), you can do that by fo
 ```bash
 sudo singularity build --sandbox <final-container-directory> <input-file.sif>
 ```
-3. run `./wrapper.sh` with `WRITABLE=true` and `FAKEROOT=true`,
+2. modify the path to the container in the `wrapper.sh`:
+```bash
+CONTAINER_NAME="mrs_uav_system/"
+```
+3. run `sudo ./wrapper.sh` with these modifications: `WRITABLE=true` and `DETACH_TMP=false`,
 4. modify the container, install stuff, etc.,
 5. convert back to `.sif`, ([./scripts/convert_sandbox.sh](./scripts/convert_sandbox.sh), `TO_SANBOX=false`):
 ```bash
 sudo singularity build <output-file.sif> <input-container-directory/>
 ```
+6. undo the changes in the wrapper, i.e., set `WRITABLE=false`, and `DETACH_TMP=true` and `CONTAINER_NAME="mrs_uav_system.sif"`.
 
 # Troubleshooting
 

@@ -1,7 +1,9 @@
-Bootstrap: docker
-# Bootstrap: docker-daemon
-From: ubuntu:20.04
-# From: klaxalk/linux-setup:master
+Bootstrap: docker # uncomment for bootstrapping from dockerhub
+# Bootstrap: docker-daemon # uncomment for bootstrapping from local docker daemon
+
+# From: ubuntu:20.04 # uncomment for bootstrapping from generic Ubuntu image
+From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
+# From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
 
 %post
 
@@ -12,11 +14,14 @@ From: ubuntu:20.04
     sudo apt-get install -y -q
     DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
 
+    # we need curl to add the PPAs later
     sudo apt-get -y install curl
 
+    # install ROS
     curl https://ctu-mrs.github.io/ppa-unstable/add_ros_ppa.sh | bash
     apt-get -y install ros-noetic-desktop-full
 
+    # install the MRS UAV System
     curl https://ctu-mrs.github.io/ppa-unstable/add_ppa.sh | bash
     apt-get -y install ros-noetic-mrs-uav-system-full
 
@@ -24,10 +29,10 @@ From: ubuntu:20.04
     export MRS_LOCATION=/opt/mrs
     mkdir -p $MRS_LOCATION
 
-    # link configuration file for the MRS env
+    # link configuration file for the MRS Singularity
     ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
 
-    # link configuration file for the linux-setup env
+    # link configuration file for the linux-setup environment
     ln -s $MRS_LOCATION/host/99-linux_setup_env.sh /.singularity.d/env/99-linux_setup_env.sh
 
 %environment
