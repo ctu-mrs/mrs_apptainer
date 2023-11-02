@@ -2,8 +2,8 @@ Bootstrap: docker # uncomment for bootstrapping from dockerhub
 # Bootstrap: docker-daemon # uncomment for bootstrapping from local docker daemon
 
 # From: ubuntu:20.04 # uncomment for bootstrapping from generic Ubuntu image
-From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
-# From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
+# From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
+From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
 
 %post
 
