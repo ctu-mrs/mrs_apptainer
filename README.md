@@ -65,10 +65,10 @@ You can test whether the MRS UAV System is operational by starting the [example 
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
 5. To compile your software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_singularity>/user_ros_workspace/src` folder of this repository.
-As an example, let's clone the [Example Tracker Plugin](https://github.com/ctu-mrs/example_tracker_plugin).
+As an example, let's clone the [mrs_core_examples](https://github.com/ctu-mrs/mrs_core_examples).
 ```bash
 cd user_ros_workspace/src
-git clone https://github.com/ctu-mrs/example_tracker_plugin.git
+git clone https://github.com/ctu-mrs/mrs_core_examples.git
 ```
 This host's computer folder is mounted into the container as `~/user_ros_workspace`.
 You can then run the singularity container, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
@@ -82,7 +82,7 @@ Although the workspace resides on your host computer, the software cannot be run
 The container fulfills the dependencies.
 To start the software, do so from within the container:
 ```bash
-[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/examle_tracker_plugin/tmux
+[MRS Singularity] user@hostname:~$ cd ~/user_ros_workspace/src/mrs_core_examples/cpp/waypoint_flier/tmux
 [MRS Singularity] user@hostname:~$ ./start.sh
 ```
 
