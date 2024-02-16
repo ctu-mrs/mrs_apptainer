@@ -238,7 +238,7 @@ Therefore, finding out what you need to do is tedious.
 However, finding what actions you need to take can be done by using an overlay or modifying the container directly.
 See the manual down below.
 
-An example recipe, that creates a new image with [Visual Studio Code]() can be found in [./recipes/05_user_modifications](./recipes/05_user_modifications).
+An example recipe, that creates a new image with [Visual Studio Code]() can be found in [./recipes/user_modifications_from_singularity_img](./recipes/user_modifications_from_singularity_img)
 User modifications can also be added directly by modifying one of the main recipes.
 However, creating a custom recipe for modifying an already existing image is a more future-proof solution.
 
