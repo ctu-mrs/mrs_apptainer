@@ -37,11 +37,11 @@ USE_NVIDIA=false # true: will tell Singularity that it should use nvidia graphic
 OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
 WRITABLE=false # true: will run it as --writable (works with --sandbox containers, image can be converted with scripts/convert_sandbox.sh)
 
-# definy what should be mounted from the host to the container
+# defines what should be mounted from the host to the container
 # [TYPE], [SOURCE (host)], [DESTINATION (container)]
 MOUNTS=(
   # mount the custom user workspace into the container
-  #                  HOST PATH                                    CONTAINER PATH
+  #           HOST PATH                                  CONTAINER PATH
   "type=bind" "$MRS_SINGULARITY_PATH/user_ros_workspace" "/home/$USER/user_ros_workspace"
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
