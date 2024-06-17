@@ -32,6 +32,6 @@ if [ -e $LINUX_SETUP_LOCATION ]; then
   [ ! -e ~/.ycm_extra_conf.py ] && ln -s $LINUX_SETUP_LOCATION/appconfig/vim/dotycm_extra_conf.py ~/.ycm_extra_conf.py
 
   # link .vim.rc additions
-  [ ! -e ~/.my.vimrc ] && ln -s $MRS_LOCATION/host/singularity_vimrc ~/.my.vimrc
+  [ ! -e ~/.my.vimrc ] && ln -s $MRS_LOCATION/host/apptainer_vimrc ~/.my.vimrc
 
 fi

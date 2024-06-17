@@ -1,6 +1,6 @@
 export SHELL=$( which zsh )
 
-PROMPT='[MRS Singularity]%1~ %# '
+PROMPT='[MRS Apptainer]%1~ %# '
 
 source /opt/ros/noetic/setup.zsh
 

@@ -25,11 +25,11 @@ From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linu
     curl https://ctu-mrs.github.io/ppa-stable/add_ppa.sh | bash
     apt-get -y install ros-noetic-mrs-uav-system-full
 
-    # location for the singularity files
+    # location for the apptainer files
     export MRS_LOCATION=/opt/mrs
     mkdir -p $MRS_LOCATION
 
-    # link configuration file for the MRS Singularity
+    # link configuration file for the MRS Apptainer
     ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
 
     # link configuration file for the linux-setup environment

@@ -10,16 +10,16 @@ trap 'echo "$0: \"${last_command}\" command failed with exit code $?"' ERR
 # Change the following paths when moving the script and the folders around
 
 # get the path to the current directory
-MRS_SINGULARITY_PATH=`dirname "$0"`
-MRS_SINGULARITY_PATH=`( cd "$MRS_SINGULARITY_PATH" && pwd )`
+MRS_APPTAINER_PATH=`dirname "$0"`
+MRS_APPTAINER_PATH=`( cd "$MRS_APPTAINER_PATH" && pwd )`
 
 # alternatively, set it directly
-# MRS_SINGULARITY_PATH=$HOME/git/mrs_singularity
+# MRS_APPTAINER_PATH=$HOME/git/mrs_apptainer
 
 # define paths to the subfolders
-IMAGES_PATH="$MRS_SINGULARITY_PATH/images"
-OVERLAYS_PATH="$MRS_SINGULARITY_PATH/overlays"
-MOUNT_PATH="$MRS_SINGULARITY_PATH/mount"
+IMAGES_PATH="$MRS_APPTAINER_PATH/images"
+OVERLAYS_PATH="$MRS_APPTAINER_PATH/overlays"
+MOUNT_PATH="$MRS_APPTAINER_PATH/mount"
 
 ## | ----------------------- user config ---------------------- |
 
@@ -31,7 +31,7 @@ OVERLAY_NAME="mrs_uav_system.img"
 CONTAINED=true  # true: will isolate from the HOST's home
 CLEAN_ENV=true # true: will clean the shell environment before runnning container
 
-USE_NVIDIA=false # true: will tell Singularity that it should use nvidia graphics. Does not work every time.
+USE_NVIDIA=true # true: will tell Apptainer that it should use nvidia graphics. Does not work every time.
 
 # the following are mutually exclusive
 OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
@@ -42,7 +42,7 @@ WRITABLE=false # true: will run it as --writable (works with --sandbox container
 MOUNTS=(
   # mount the custom user workspace into the container
   #           HOST PATH                                  CONTAINER PATH
-  "type=bind" "$MRS_SINGULARITY_PATH/user_ros_workspace" "/home/$USER/user_ros_workspace"
+  "type=bind" "$MRS_APPTAINER_PATH/user_ros_workspace" "/home/$USER/user_ros_workspace"
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
   "type=bind" "$MOUNT_PATH" "/opt/mrs/host"
@@ -51,7 +51,7 @@ MOUNTS=(
 ## | ------------------ advanced user config ------------------ |
 
 # not supposed to be changed by a normal user
-DEBUG=false           # true: print the singularity command instead of running it
+DEBUG=false           # true: print the apptainer command instead of running it
 KEEP_ROOT_PRIVS=false # true: let root keep privileges in the container
 FAKEROOT=false        # true: run as superuser
 DETACH_TMP=true       # true: do NOT mount host's /tmp
@@ -86,7 +86,7 @@ else
 fi
 
 if $CONTAINED; then
-  CONTAINED_ARG="--home /tmp/singularity/home:/home/$USER"
+  CONTAINED_ARG="--home /tmp/apptainer/home:/home/$USER"
   $DEBUG && echo "Debug: running as contained"
 else
   CONTAINED_ARG=""
@@ -128,7 +128,7 @@ else
 fi
 
 if $DETACH_TMP; then
-  TMP_PATH="/tmp/singularity/tmp"
+  TMP_PATH="/tmp/apptainer/tmp"
   DETACH_TMP_ARG="--bind $TMP_PATH:/tmp"
   $DEBUG && echo "Debug: detaching tmp from the host"
 else
@@ -152,18 +152,9 @@ if ! $WRITABLE; then
     ((i%3==2)) && DESTINATION[$i/3]=$( realpath -m "${MOUNTS[$i]}" )
   done
 
-  # detect if the installed singularity uses the new --mount commnad
-  singularity_help_mount=$( singularity run --help | grep -e "--mount" | wc -l )
-
-  if [ "$singularity_help_mount" -ge "1" ]; then
-    for ((i=0; i < ${#TYPE[*]}; i++)); do
-      MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
-    done
-  else
-    for ((i=0; i < ${#TYPE[*]}; i++)); do
-      MOUNT_ARG="$MOUNT_ARG --bind ${SOURCE[$i]}:${DESTINATION[$i]}"
-    done
-  fi
+  for ((i=0; i < ${#TYPE[*]}; i++)); do
+    MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
+  done
 
 fi
 
@@ -180,14 +171,14 @@ else
   exit 1
 fi
 
-# create tmp folder for singularity in host's tmp
-[ ! -e /tmp/singularity/tmp ] && mkdir -p /tmp/singularity/tmp
-[ ! -e /tmp/singularity/home ] && mkdir -p /tmp/singularity/home
+# create tmp folder for apptainer in host's tmp
+[ ! -e /tmp/apptainer/tmp ] && mkdir -p /tmp/apptainer/tmp
+[ ! -e /tmp/apptainer/home ] && mkdir -p /tmp/apptainer/home
 
 # this will set $DISPLAY in the container to the same value as on your host machine
-export SINGULARITYENV_DISPLAY=$DISPLAY
+export APPTAINERENV_DISPLAY=$DISPLAY
 
-$EXEC_CMD singularity $ACTION \
+$EXEC_CMD apptainer $ACTION \
   $NVIDIA_ARG \
   $OVERLAY_ARG \
   $CONTAINED_ARG \
