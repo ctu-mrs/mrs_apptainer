@@ -31,7 +31,7 @@ OVERLAY_NAME="mrs_uav_system.img"
 CONTAINED=true  # true: will isolate from the HOST's home
 CLEAN_ENV=true # true: will clean the shell environment before runnning container
 
-USE_NVIDIA=true # true: will tell Apptainer that it should use nvidia graphics. Does not work every time.
+USE_NVIDIA=false # true: will tell Apptainer that it should use nvidia graphics. Does not work every time.
 
 # the following are mutually exclusive
 OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
@@ -46,6 +46,11 @@ MOUNTS=(
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
   "type=bind" "$MOUNT_PATH" "/opt/mrs/host"
+
+  # passing GUI to the host
+  "type=bind" "/tmp/.X11-unix" "/tmp/.X11-unix"
+  "type=bind" "/dev/dri" "/dev/dri"
+  "type=bind" "$HOME/.Xauthority" "/home/$USER/.Xauthority"
 )
 
 ## | ------------------ advanced user config ------------------ |
