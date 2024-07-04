@@ -114,24 +114,7 @@ fi
 set -o vi
 
 source /opt/ros/noetic/setup.bash
-
-if [ -e /opt/mrs/modules_workspace ]; then
-
-  if [ -e /opt/mrs/modules_workspace/install/setup.bash ]; then
-    source /opt/mrs/modules_workspace/install/setup.bash
-  else
-    source /opt/mrs/modules_workspace/devel/setup.bash
-  fi
-
-elif [ -e /opt/mrs/mrs_workspace ]; then
-
-  if [ -e /opt/mrs/mrs_workspace/install/setup.bash ]; then
-    source /opt/mrs/mrs_workspace/install/setup.bash
-  else
-    source /opt/mrs/mrs_workspace/devel/setup.bash
-  fi
-
-fi
+source /usr/share/gazebo/setup.bash
 
 # source the user_workspace, if it exists
 [ -e ~/user_ros_workspace/devel/setup.bash ] && source ~/user_ros_workspace/devel/setup.bash
@@ -145,7 +128,6 @@ export ROS_WORKSPACES="$ROS_WORKSPACES ~/user_ros_workspace"
 OS_INFO=$(cat /proc/version)
 if ! ([[ "$OS_INFO" == *"Ubuntu"* ]] && [[ "$OS_INFO" == *"20.04"* ]]); then
   export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-  source /usr/share/gazebo/setup.bash
 fi
 
 # source the linux setup from within

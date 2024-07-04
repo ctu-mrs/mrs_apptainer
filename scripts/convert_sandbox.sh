@@ -17,7 +17,7 @@ IMAGE_NAME=mrs_uav_system
 
 if $TO_SANDBOX; then
   echo "building --sandbox image"
-  singularity build --fakeroot --sandbox $IMAGES_PATH/$IMAGE_NAME/ $IMAGES_PATH/$IMAGE_NAME.sif
+  apptainer build --fakeroot --sandbox $IMAGES_PATH/$IMAGE_NAME/ $IMAGES_PATH/$IMAGE_NAME.sif
 else
-  singularity build --fakeroot $IMAGES_PATH/$IMAGE_NAME.sif $IMAGES_PATH/$IMAGE_NAME/
+  apptainer build --fakeroot $IMAGES_PATH/$IMAGE_NAME.sif $IMAGES_PATH/$IMAGE_NAME/
 fi
