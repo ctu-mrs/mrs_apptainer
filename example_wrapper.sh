@@ -46,11 +46,6 @@ MOUNTS=(
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
   "type=bind" "$MOUNT_PATH" "/opt/mrs/host"
-
-  # passing GUI to the host
-  "type=bind" "/tmp/.X11-unix" "/tmp/.X11-unix"
-  "type=bind" "/dev/dri" "/dev/dri"
-  "type=bind" "$HOME/.Xauthority" "/home/$USER/.Xauthority"
 )
 
 ## | ------------------ advanced user config ------------------ |
@@ -183,6 +178,8 @@ fi
 # this will set $DISPLAY in the container to the same value as on your host machine
 export APPTAINERENV_DISPLAY=$DISPLAY
 
+xhost + > /dev/null 2>&1
+
 $EXEC_CMD apptainer $ACTION \
   $NVIDIA_ARG \
   $OVERLAY_ARG \
@@ -195,3 +192,5 @@ $EXEC_CMD apptainer $ACTION \
   $DETACH_TMP_ARG \
   $CONTAINER_PATH \
   $CMD
+
+xhost - > /dev/null 2>&1

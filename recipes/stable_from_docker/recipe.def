@@ -1,0 +1,26 @@
+Bootstrap: docker
+
+From: ctumrs/mrs_uav_system:latest
+
+%post
+
+    # location for the apptainer files
+    export MRS_LOCATION=/opt/mrs
+    mkdir -p $MRS_LOCATION
+
+    # link configuration file for the MRS Apptainer
+    ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
+
+%environment
+    export LC_ALL=C
+
+%runscript
+  CMD="${@}"
+
+  if [ -z "${CMD}" ]; then
+    /bin/bash --login
+  else
+    /bin/bash --login -c "${CMD}"
+  fi
+
+  exit 0
