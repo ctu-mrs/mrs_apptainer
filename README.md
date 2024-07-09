@@ -28,13 +28,13 @@ MRS Apptainer will run on the following operating systems
 1. Install Apptainer - [install/install_apptainer.sh](./install/install_apptainer.sh).
 2. Create a Apptainer image of the MRS UAV System. _This should take up to 15 minutes, depending on your internet connection and computer resources_.
 
-| **build script**                                       | **description**                                                           |
-|--------------------------------------------------------|---------------------------------------------------------------------------|
-| [recipes/stable/build.sh](recipes/stable/build.sh)     | installs from the [stable PPA](https://github.com/ctu-mrs/ppa-stable)     |
-| [recipes/unstable/build.sh](recipes/unstable/build.sh) | installs from the [unstable PPA](https://github.com/ctu-mrs/ppa-unstable) |
+| **build script**                                                           | **description**                                                                         |
+|----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
+| [recipes/stable_from_docker/build.sh](recipes/stable_from_docker/build.sh) | installs the latest [Docker Image](https://hub.docker.com/r/ctumrs/mrs_uav_system/tags) |
+| [recipes/stable_from_apt/build.sh](recipes/stable_from_apt/build.sh)       | installs directly from the [stable PPA](https://github.com/ctu-mrs/ppa-stable)          |
 
-3. Copy the [example_wrapper.sh](./example_wrapper.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself.
-4. Run the Apptainer container by issuing:
+3. Copy the [example_wrapper.sh](./example_wrapper.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself. When copying the `example_wrapper.sh` outside of the `mrs_apptainer` folder, the `MRS_APPTAINER_PATH` variable within the script needs to be pointed to the correct location of the repository.
+5. Run the Apptainer container by issuing:
 ```bash
 ./wrapper.sh
 ```
