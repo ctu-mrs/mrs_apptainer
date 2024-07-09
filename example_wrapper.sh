@@ -25,7 +25,7 @@ MOUNT_PATH="$MRS_APPTAINER_PATH/mount"
 
 # use <file>.sif for normal container
 # use <folder>/ for sandbox container
-CONTAINER_NAME="mrs_uav_system.sif"
+CONTAINER_NAME="mrs_uav_system/"
 OVERLAY_NAME="mrs_uav_system.img"
 
 CONTAINED=true  # true: will isolate from the HOST's home
@@ -59,7 +59,6 @@ MOUNTS=(
 # not supposed to be changed by a normal user
 DEBUG=false           # true: print the apptainer command instead of running it
 KEEP_ROOT_PRIVS=false # true: let root keep privileges in the container
-FAKEROOT=false        # true: run as superuser
 DETACH_TMP=true       # true: do NOT mount host's /tmp
 
 ## | --------------------- user config end -------------------- |
@@ -94,6 +93,7 @@ fi
 
 if $WRITABLE; then
   WRITABLE_ARG="--writable"
+  FAKEROOT=true
   $DEBUG && echo "Debug: running as writable"
 else
   WRITABLE_ARG=""

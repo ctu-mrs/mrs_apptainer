@@ -239,13 +239,13 @@ sudo apptainer build --sandbox <final-container-directory> <input-file.sif>
 ```bash
 CONTAINER_NAME="mrs_uav_system/"
 ```
-3. run `sudo ./wrapper.sh` with these modifications: `WRITABLE=true` and `DETACH_TMP=false`,
+3. run the `./wrapper.sh` while setting these variables withing the script: `WRITABLE=true`,
 4. modify the container, install stuff, etc.,
 5. convert back to `.sif`, ([./scripts/convert_sandbox.sh](./scripts/convert_sandbox.sh), `TO_SANBOX=false`):
 ```bash
 sudo apptainer build <output-file.sif> <input-container-directory/>
 ```
-6. undo the changes in the wrapper, i.e., set `WRITABLE=false`, and `DETACH_TMP=true` and `CONTAINER_NAME="mrs_uav_system.sif"`.
+6. undo the changes in the wrapper, i.e., set `WRITABLE=false` and `CONTAINER_NAME="mrs_uav_system.sif"`.
 
 # Troubleshooting
 
