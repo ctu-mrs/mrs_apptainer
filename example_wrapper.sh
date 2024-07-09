@@ -39,6 +39,7 @@ WRITABLE=false # true: will run it as --writable (works with --sandbox container
 
 # defines what should be mounted from the host to the container
 # [TYPE], [SOURCE (host)], [DESTINATION (container)]
+# - !!! the folders are not being mounted when running with sudo
 MOUNTS=(
   # mount the custom user workspace into the container
   #           HOST PATH                                  CONTAINER PATH
@@ -46,6 +47,11 @@ MOUNTS=(
 
   # mount the MRS shell additions into the container, DO NOT MODIFY
   "type=bind" "$MOUNT_PATH" "/opt/mrs/host"
+
+  # mount folders to facilitate Xserver piping
+  "type=bind" "/tmp/.X11-unix" "/tmp/.X11-unix"
+  "type=bind" "/dev/dri" "/dev/dri"
+  "type=bind" "$HOME/.Xauthority" "/home/$USER/.Xauthority"
 )
 
 ## | ------------------ advanced user config ------------------ |
@@ -57,12 +63,6 @@ FAKEROOT=false        # true: run as superuser
 DETACH_TMP=true       # true: do NOT mount host's /tmp
 
 ## | --------------------- user config end -------------------- |
-
-# check whether we are already in tmux
-if [ -n "$TMUX" ]; then
-  echo "You are probably in a TMUX session. Exit the tmux session first please."
-  exit 1
-fi
 
 if [ -z "$1" ]; then
   ACTION="run"
@@ -148,12 +148,25 @@ if ! $WRITABLE; then
   for ((i=0; i < ${#MOUNTS[*]}; i++));
   do
     ((i%3==0)) && TYPE[$i/3]="${MOUNTS[$i]}"
-    ((i%3==1)) && SOURCE[$i/3]=$( realpath -e "${MOUNTS[$i]}" )
-    ((i%3==2)) && DESTINATION[$i/3]=$( realpath -m "${MOUNTS[$i]}" )
+    ((i%3==1)) && SOURCE[$i/3]="${MOUNTS[$i]}"
+    ((i%3==2)) && DESTINATION[$i/3]="${MOUNTS[$i]}"
   done
 
   for ((i=0; i < ${#TYPE[*]}; i++)); do
-    MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=${SOURCE[$i]},destination=${DESTINATION[$i]}"
+
+    if test -e ${SOURCE[$i]}; then
+
+      FULL_SOURCE=$( realpath -e ${SOURCE[$i]} )
+      FULL_DESTINATION=$( realpath -m ${DESTINATION[$i]} )
+
+      MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=$FULL_SOURCE,destination=$FULL_DESTINATION"
+
+    else
+
+      echo "Error while mounting '${SOURCE[$i]}', the path does not exist".
+
+    fi
+
   done
 
 fi
