@@ -36,6 +36,7 @@ USE_NVIDIA=false # true: will tell Apptainer that it should use nvidia graphics.
 # the following are mutually exclusive
 OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
 WRITABLE=false # true: will run it as --writable (works with --sandbox containers, image can be converted with scripts/convert_sandbox.sh)
+FAKEROOT=false # true: emulate root inside the container
 
 # defines what should be mounted from the host to the container
 # [TYPE], [SOURCE (host)], [DESTINATION (container)]
