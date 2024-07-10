@@ -25,7 +25,7 @@ MOUNT_PATH="$MRS_APPTAINER_PATH/mount"
 
 # use <file>.sif for normal container
 # use <folder>/ for sandbox container
-CONTAINER_NAME="mrs_uav_system/"
+CONTAINER_NAME="mrs_uav_system.sif"
 OVERLAY_NAME="mrs_uav_system.img"
 
 CONTAINED=true  # true: will isolate from the HOST's home
