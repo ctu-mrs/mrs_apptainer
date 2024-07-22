@@ -15,7 +15,8 @@ From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
     DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
 
     # we need curl to add the PPAs later
-    sudo apt-get -y install curl
+    # git handy when cloning inside the container
+    sudo apt-get -y install curl git
 
     # install ROS
     curl https://ctu-mrs.github.io/ppa-stable/add_ros_ppa.sh | bash
