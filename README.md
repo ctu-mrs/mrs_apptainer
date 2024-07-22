@@ -200,8 +200,14 @@ A persistent overlay is an additional image that is dynamically loaded and _atta
 Using an overlay is the most straightforward way to store changes to the container, e.g., additional installed software and libraries.
 
 1. Create the overlay image using the provided script: [./scripts/create_overlay.sh](./scripts/create_overlay.sh) (choose the overlay size in the script)
-2. Start `wrapper.sh` with `OVERLAY=TRUE`.
-3. Run `sudo ./wrapper` to install additional stuff. Remember not to put stuff in `$HOME`.
+2. Set `OVERLAY=TRUE` inside `wrapper.sh`.
+3. Run `sudo ./wrapper` to install additional stuff, e.g.:
+```bash
+apt-get install git
+```
+Remember not to put stuff in `$HOME`.
+4. Exit the container's terminal and start the wrapper without sudo: `./wrapper.sh`
+5. Now, `git` should be installed.
 
 Optinally, the overlay can be embedded into the provided image by running [./scripts/embed_overlay.sh](./scripts/embed_overlay.sh).
 Embedding an overlay might be helpful, e.g., when providing the altered image to a third party.
