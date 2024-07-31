@@ -94,6 +94,7 @@ fi
 
 if $WRITABLE; then
   WRITABLE_ARG="--writable"
+  DETACH_TMP=true
   FAKEROOT=true
   $DEBUG && echo "Debug: running as writable"
 else
