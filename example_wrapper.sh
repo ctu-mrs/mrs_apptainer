@@ -159,7 +159,7 @@ if ! $WRITABLE; then
     if test -e ${SOURCE[$i]}; then
 
       FULL_SOURCE=$( realpath -e ${SOURCE[$i]} )
-      FULL_DESTINATION=$( realpath -m ${DESTINATION[$i]} )
+      FULL_DESTINATION=$( realpath -ms ${DESTINATION[$i]} )
 
       MOUNT_ARG="$MOUNT_ARG --mount ${TYPE[$i]},source=$FULL_SOURCE,destination=$FULL_DESTINATION"
 
