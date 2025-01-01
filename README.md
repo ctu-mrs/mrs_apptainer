@@ -264,6 +264,10 @@ These folders are located in `/tmp/apptainer` of your machine.
 rm -rf /tmp/apptainer
 ```
 
+## Permission issues with /dev/dri
+
+In the wrapper file, simply comment out the binding for `/dev/dri/`. This will allow for access through your host, solving the issue.
+
 ## No loop devices available
 
 If you encounter "**No loop devices available**" problem while running apptainer:
