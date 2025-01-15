@@ -22,7 +22,7 @@ if [ -e $LINUX_SETUP_LOCATION ]; then
 
   [ ! -e ~/.config/ranger/commands.py ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/commands.py ~/.config/ranger/commands.py
 
-  [ ! -e ~/.config/ranger/rc.conf ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/rc.conf ~/.config/ranger/rc.conf
+  [ ! -e ~/.config/ranger/rc.conf ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/rc.conf_git ~/.config/ranger/rc.conf
 
   [ ! -e ~/.config/ranger/scope.sh ] && ln -s $LINUX_SETUP_LOCATION/appconfig/ranger/scope.sh ~/.config/ranger/scope.sh
 
