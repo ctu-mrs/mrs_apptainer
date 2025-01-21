@@ -1,9 +1,9 @@
 Bootstrap: docker # uncomment for bootstrapping from dockerhub
 # Bootstrap: docker-daemon # uncomment for bootstrapping from local docker daemon
 
-From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
+# From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
 # From: ubuntu:20.04 # uncomment for bootstrapping from generic Ubuntu image
-# From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
+From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
 
 %post
 
@@ -25,6 +25,9 @@ From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
     # install the MRS UAV System
     curl https://ctu-mrs.github.io/ppa-stable/add_ppa.sh | bash
     apt-get -y install ros-noetic-mrs-uav-system-full
+
+    # python virtual environment for setting up custom venvs
+    apt-get -y install python3-venv
 
     # location for the apptainer files
     export MRS_LOCATION=/opt/mrs
