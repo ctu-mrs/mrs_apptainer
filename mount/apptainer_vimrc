@@ -5,5 +5,5 @@
 " this .vimrc additions are used to override the colorscheme without modifying
 " any internal files
 
-" colorscheme jellybeans
-" let g:airline_theme='jellybeans'
+colorscheme jellybeans
+let g:airline_theme='jellybeans'
