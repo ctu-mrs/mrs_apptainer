@@ -206,6 +206,7 @@ Using an overlay is the most straightforward way to store changes to the contain
 apt-get install git
 ```
 Remember not to put stuff in `$HOME`.
+
 4. Exit the container's terminal and start the wrapper without sudo: `./wrapper.sh`
 5. Now, `git` should be installed.
 
