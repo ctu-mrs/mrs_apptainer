@@ -11,7 +11,7 @@ if [ -e $CONTAINER_ENV_HOST/dot_config/dot_zshrc ]; then
   source $CONTAINER_ENV_HOST/dot_config/dot_zshrc
 fi
 
-source /opt/ros/${ROS_DISTRO}/setup.zsh
+[[ -f /opt/ros/${ROS_DISTRO}/setup.zsh ]] && source /opt/ros/${ROS_DISTRO}/setup.zsh
 
 ros2_jazzy_env() {
   # ROS2 env-varibles
@@ -42,7 +42,7 @@ ros1_noetic_env() {
   OS_INFO=$(cat /proc/version)
   if ! ([[ "$OS_INFO" == *"Ubuntu"* ]] && [[ "$OS_INFO" == *"20.04"* ]]); then
     export LD_LIBRARY_PATH=/usr/lib/x86_64-linux-gnu:$LD_LIBRARY_PATH
-    source /usr/share/gazebo/setup.bash
+    [[ -f /usr/share/gazebo/setup.bash ]] && source /usr/share/gazebo/setup.bash
   fi
 
   # source the user_workspace, if it exists
