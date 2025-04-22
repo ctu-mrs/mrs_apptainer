@@ -4,10 +4,9 @@ From: ros:jazzy
 %post
   # fix prompts during installation
   apt-get -y update
-  apt-get -y install sudo
-  echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
-  sudo apt-get install -y -q
-  DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
+  echo 'debconf debconf/frontend select Noninteractive' | debconf-set-selections
+  apt-get install -y -q
+  DEBIAN_FRONTEND=noninteractive apt-get -y install keyboard-configuration
 
   apt-get -y install \
     ros-jazzy-geographic-msgs \
@@ -46,12 +45,12 @@ From: ros:jazzy
   export ZSH=/opt/oh-my-zsh && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
 
   # directory to store env config files
-  export CUSTOM_LOCATION=/opt/env/host
-  mkdir -p $CUSTOM_LOCATION
+  export CONTAINER_ENV_HOST=/opt/env/host
+  mkdir -p $CONTAINER_ENV_HOST
 
   # link the env file (will be mounted at runtime) to the default env file
   # file in /.singularity.d/env/99-env.sh are sourced at startup
-  ln -s $CUSTOM_LOCATION/apptainer_config/99-env.sh /.singularity.d/env/99-env.sh
+  ln -s $CONTAINER_ENV_HOST/apptainer_config/99-env.sh /.singularity.d/env/99-env.sh
 
 %environment
   export LANG=en_US.UTF-8
