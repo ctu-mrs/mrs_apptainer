@@ -1,9 +1,22 @@
 #!/bin/bash
 
-sudo apt-get -y update
+# Exit the script if any command fails
+set -e
 
-sudo apt -y install software-properties-common
+# the traps make sure the script notifies the use which command has failed
+trap 'last_command=$current_command; current_command=$BASH_COMMAND' DEBUG
+trap 'echo "$0: \"${last_command}\" command failed with exit code $?"' ERR
 
-sudo add-apt-repository -y ppa:apptainer/ppa
+# install pkgs needed for cool shell visualizations
+apt-get install -y -q \
+    toilet \
+    dialog
 
-sudo apt-get -y install apptainer-suid
+toilet -w 200 -f future "Installing Apptainer"
+apt-get update
+apt-get install -y software-properties-common
+add-apt-repository -y ppa:apptainer/ppa
+apt-get update
+apt-get install -y apptainer
+
+apptainer exec docker://ghcr.io/apptainer/lolcow cowsay "Apptainer MOOOOOOO"

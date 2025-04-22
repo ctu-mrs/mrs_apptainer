@@ -1,6 +1,0 @@
-devel/
-build/
-logs/
-src/**/
-src/*
-.catkin_tools

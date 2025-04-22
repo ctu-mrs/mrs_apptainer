@@ -1,0 +1,68 @@
+Bootstrap: docker
+From: ros:jazzy
+
+%post
+  # fix prompts during installation
+  apt-get -y update
+  apt-get -y install sudo
+  echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
+  sudo apt-get install -y -q
+  DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
+
+  apt-get -y install \
+    ros-jazzy-geographic-msgs \
+    ros-jazzy-geometry-msgs \
+    ros-jazzy-tf2-geometry-msgs \
+    ros-jazzy-std-msgs \
+    ros-jazzy-nav-msgs \
+    ros-jazzy-tf2 \
+    ros-jazzy-fastcdr \
+    libboost-all-dev \
+    iputils-ping \
+    iproute2 \
+    gdb \
+    git \
+    ros-jazzy-backward-ros \
+    ros-jazzy-rqt-graph \
+    tmux \
+    python3-pip \
+    bat \
+    tmuxinator \
+    fonts-powerline \
+    zsh \
+    curl \
+    dialog \
+    libeigen3-dev \
+    libopencv-dev \
+    ros-jazzy-image-transport \
+    ros-jazzy-cv-bridge \
+    ros-jazzy-sensor-msgs \
+    ros-jazzy-rqt-*
+
+  # intall prompt manager for zsh
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
+
+  # install Oh-my-Zsh
+  export ZSH=/opt/oh-my-zsh && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  # directory to store env config files
+  export CUSTOM_LOCATION=/opt/env/host
+  mkdir -p $CUSTOM_LOCATION
+
+  # link the env file (will be mounted at runtime) to the default env file
+  # file in /.singularity.d/env/99-env.sh are sourced at startup
+  ln -s $CUSTOM_LOCATION/apptainer_config/99-env.sh /.singularity.d/env/99-env.sh
+
+%environment
+  export LANG=en_US.UTF-8
+
+%runscript
+  CMD="${@}"
+
+  if [ -z "${CMD}" ]; then
+    /bin/zsh --login
+  else
+    /bin/zsh --login -c "${CMD}"
+  fi
+
+  exit 0

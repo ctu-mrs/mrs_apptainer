@@ -1,0 +1,20 @@
+{
+    "build": {
+        "debug": {
+            "cmake-args": ["-DCMAKE_BUILD_TYPE=Debug",
+                            "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                            "-DCMAKE_CXX_FLAGS='-std=c++17 -Og'",
+                            "-DCMAKE_C_FLAGS='-Og'"]
+        },
+        "rel-with-deb-info": {
+            "cmake-args": ["-DCMAKE_BUILD_TYPE=RelWithDebInfo",
+                            "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                            "-DCMAKE_CXX_FLAGS='-std=c++17'"]
+        },
+        "release": {
+            "cmake-args": ["-DCMAKE_BUILD_TYPE=Release",
+                            "-DCMAKE_EXPORT_COMPILE_COMMANDS=ON",
+                            "-DCMAKE_CXX_FLAGS='-std=c++17'"]
+        }
+    }
+}

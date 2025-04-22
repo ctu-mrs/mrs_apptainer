@@ -11,11 +11,11 @@ From: ctumrs/mrs_uav_system:latest
     apt-get -y install python3-venv
 
     # location for the apptainer files
-    export MRS_LOCATION=/opt/mrs
-    mkdir -p $MRS_LOCATION
+    export CONTAINER_ENV_HOST=/opt/env/host
+    mkdir -p $CONTAINER_ENV_HOST
 
     # link configuration file for the MRS Apptainer
-    ln -s $MRS_LOCATION/host/99-mrs_env.sh /.singularity.d/env/99-mrs_env.sh
+    ln -s $CONTAINER_ENV_HOST/apptainer_config/99-env.sh /.singularity.d/env/99-env.sh
 
 %environment
     export LC_ALL=C

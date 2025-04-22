@@ -1,0 +1,51 @@
+Bootstrap: docker
+From: ros:noetic
+
+%post
+  # fix prompts during installation
+  apt-get -y update
+  apt-get -y install sudo
+  echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
+  sudo apt-get install -y -q
+  DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
+  
+  apt-get -y install \
+    ros-noetic-rqt-* \
+    tmux \
+    bat \
+    tmuxinator \
+    fonts-powerline \
+    zsh \
+    curl
+
+  # intall prompt manager for zsh
+  curl -sS https://starship.rs/install.sh | sh -s -- -y
+
+  # install Oh-my-Zsh
+  export ZSH=/opt/oh-my-zsh && sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+
+  wget -q https://raw.githubusercontent.com/mavlink/mavros/master/mavros/scripts/install_geographiclib_datasets.sh && \
+  chmod +x install_geographiclib_datasets.sh && \
+  sudo ./install_geographiclib_datasets.sh
+
+  # directory to store env config files
+  export CUSTOM_LOCATION=/opt/env/host
+  mkdir -p $CUSTOM_LOCATION
+
+  # link the env file (will be mounted at runtime) to the default env file
+  # file in /.singularity.d/env/99-env.sh are sourced at startup
+  ln -s $CUSTOM_LOCATION/apptainer_config/99-env.sh /.singularity.d/env/99-env.sh
+
+%environment
+  export LANG=en_US.UTF-8
+
+%runscript
+  CMD="${@}"
+
+  if [ -z "${CMD}" ]; then
+    /bin/zsh --login
+  else
+    /bin/zsh --login -c "${CMD}"
+  fi
+
+  exit 0
