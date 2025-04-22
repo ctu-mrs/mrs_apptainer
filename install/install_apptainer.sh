@@ -19,4 +19,5 @@ add-apt-repository -y ppa:apptainer/ppa
 apt-get update
 apt-get install -y apptainer
 
-apptainer exec docker://ghcr.io/apptainer/lolcow cowsay "Apptainer MOOOOOOO"
+toilet -w 200 -f future "Testing Apptainer installation"
+apptainer exec docker://ghcr.io/apptainer/lolcow cowsay "Apptainer Mooooooo"
