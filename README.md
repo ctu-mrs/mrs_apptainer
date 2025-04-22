@@ -1,272 +1,219 @@
 # MRS Apptainer
 
-This repository provides a way to run the MRS UAV System in a [Apptainer](https://apptainer.org/) container.
-Apptainer allows you, an average user, to use our system without installing it into your system and thus cluttering your OS with our software.
-Moreover, the following benefits arise when using Apptainer containers:
+This repository provides a way to run the different software systems inside a [Apptainer](https://apptainer.org/) container.
+Apptainer allows you, an average user, to use software systems like the [MRS-UAV System](https://github.com/ctu-mrs/mrs_uav_system) without installing it into your local system and thus cluttering your OS with different software.
 
-* The provided image won't change on its own and, therefore, will work and be compatible even when you update or reinstall your system.
-* The provided image will run across Ubuntu versions. You run, e.g., our ROS Noetic-based image on the 18.04 host system.
-* The provided image can be backed up easily by copy-and-pasting a single file.
-* The provided image can be altered and saved again, allowing you to store our system's particular configuration for later testing.
+**Advantages of using Apptainer for development**
+
+* The container image won't change on its own and, therefore, will work and be compatible even when you update or reinstall your system.
+* The container image will run across different OS versions, e.g., with a ROS Noetic-based image on the 18.04 host system.
+* The container image can be backed up easily by copy-pasting a single file.
+* The container image (sandboxed) can be altered and saved again, allowing you to store a particular configuration for later testing.
 
 **Why Apptainer and not just Docker?**
 
-* Apptainer integrates more into the host's system: you will get your user in the container.
-* You can get your `$HOME` mounted into the container if needed (NOT on by default).
-* With the `$HOME` mounted, the programs running inside the container can use your host's computer config files.
-* Running GUI applications is much more straightforward: it just works.
+| Feature                | Docker                                | Apptainer                          |
+|------------------------|---------------------------------------|------------------------------------|
+| Privileges Required    | Root/Sudo                             | User-level (no root needed)        |
+| Security Model         | Isolated, but root access risk        | User-bound, safer                  |
+| Image Format           | Layered filesystem                    | Single file image                  |
+| Host Integration       | Strong isolation                      | Direct host integration            |
+| Docker Image Support   | Native                                | Can import and run Docker images   |
+| File system access     | Isolated and hard to manage           | Easy to manage                     |
+| GUI applications       | Very difficult to run                 | Works out of the box               |
 
-# Prerequisities
+## Installation
 
 MRS Apptainer will run on the following operating systems
 
-* Linux
-* Windows 11 with WSL 2.0
+### Linux (Ubuntu)
 
-## Quick Start Guide (Linux)
+* Install Apptainer - [install/install_apptainer.sh](./install/install_apptainer.sh).
 
-1. Install Apptainer - [install/install_apptainer.sh](./install/install_apptainer.sh).
-2. Create a Apptainer image of the MRS UAV System. _This should take up to 15 minutes, depending on your internet connection and computer resources_.
+### Windows 11 with WSL 2.0
 
-| **build script**                                                           | **description**                                                                         |
+TODO
+
+## Using MRS Apptainer
+
+| **images**                                                           | **description**                                                                         |
 |----------------------------------------------------------------------------|-----------------------------------------------------------------------------------------|
-| [recipes/stable_from_docker/build.sh](recipes/stable_from_docker/build.sh) | installs the latest [Docker Image](https://hub.docker.com/r/ctumrs/mrs_uav_system/tags) |
-| [recipes/stable_from_apt/build.sh](recipes/stable_from_apt/build.sh)       | installs directly from the [stable PPA](https://github.com/ctu-mrs/ppa-stable)          |
+| mrs_system_docker | Installs the latest [MRS System Docker Image](https://hub.docker.com/r/ctumrs/mrs_uav_system/tags) |
+| mrs_system_apt    | Installs directly from the [MRS System stable PPA](https://github.com/ctu-mrs/ppa-stable)          |
+| ros1_noetic       | Installs bare-bones ROS-noetic with some utilities                                                 |
+| ros2_jazzy        | Installs bare-bones ROS-jazzy with some utilities                                                  |
 
-3. Copy the [example_wrapper.sh](./example_wrapper.sh) (versioned example) into `wrapper.sh` (.gitignored). It will allow you to configure the wrapper for yourself. When copying the `example_wrapper.sh` outside of the `mrs_apptainer` folder, the `MRS_APPTAINER_PATH` variable within the script needs to be pointed to the correct location of the repository.
-5. Run the Apptainer container by issuing:
+### READ-ONLY mode
+
+* In this mode, the container image can not be modified which means that programs like `apt` will fail as they modify the root file system.
+* The user can modify anything inside the `workspaces` directory mounted from the user's system.
+![Demo](.media/demo-read-only.gif)
+
+### WRITABLE mode
+
+* In this mode, the container image is actually a directory which can be modified by the user inside the container.
+* The changes made inside the container **persists** outside and in the next run of the container.
+* This mode is particularly useful when you need to install software to work with the packages inside the `workspaces` directory.
+* The user can still modify the `workspaces` directory which is mounted separately.
+![Demo](.media/demo-writable.gif)
+
+## Examples
+
+### Testing the MRS-UAV System
+
+* Run the container using the image `mrs_system_apt` in either `READ-ONLY` or `WRITABLE` mode as shown above.
+* Navigate to the MRS system gazebo example
+
 ```bash
-./wrapper.sh
+roscd mrs_uav_gazebo_simulation/tmux/one_drone
 ```
 
-Now, you should see the terminal prompt of the apptainer container, similar to this:
+* Run the MRS simulation example
+
 ```bash
-[MRS Apptainer] user@hostname:~$
+./start.sh
 ```
 
-You can test whether the MRS UAV System is operational by starting the [example Gazebo simulation session](https://ctu-mrs.github.io/docs/simulation/gazebo/gazebo/howto.html).
-```bash
-[MRS Apptainer] user@hostname:~$ roscd mrs_uav_gazebo_simulation/tmux/one_drone
-[MRS Apptainer] user@hostname:~$ ./start.sh
-```
-5. To compile your software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_apptainer>/user_ros_workspace/src` folder of this repository.
-As an example, let's clone the [mrs_core_examples](https://github.com/ctu-mrs/mrs_core_examples).
-```bash
-cd user_ros_workspace/src
-git clone https://github.com/ctu-mrs/mrs_core_examples.git
-```
-This host's computer folder is mounted into the container as `~/user_ros_workspace`.
-You can then run the apptainer container, [init the workspace](https://ctu-mrs.github.io/docs/software/catkin/managing_workspaces/managing_workspaces.html), and build the packages by:
-```bash
-./wrapper.sh
-[MRS Apptainer]$ cd ~/user_ros_workspace/
-[MRS Apptainer]$ catkin init
-[MRS Apptainer]$ catkin build
-```
-Although the workspace resides on your host computer, the software cannot be run by the host system.
-The container fulfills the dependencies.
-To start the software, do so from within the container:
-```bash
-[MRS Apptainer] user@hostname:~$ cd ~/user_ros_workspace/src/mrs_core_examples/cpp/waypoint_flier/tmux
-[MRS Apptainer] user@hostname:~$ ./start.sh
-```
+## Advanced development
 
-## Tailoring the recipes to your needs
-
-Feel free to change the recipe to your needs and  install additional software:
-
-You can select whether you want to bootstrap form a fresh ROS image, or from Tomas's [linux setup](https://github.com/klaxalk/linux-setup) image:
-```yaml
-From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
-# From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
-```
-
-You can add additional commands **at the and** of the `%post` section.
-For example, add the following code block for installing Visual Studio Code:
-```bash
-# install visual studio code
-# takeon from https://code.visualstudio.com/docs/setup/linux
-cd /tmp
-wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
-install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
-sudo sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
-rm -f packages.microsoft.gpg
-```
-
-## Default behavior
-
-* The container is run **without** mounting the host's `$HOME`.
-* The container's `/tmp` is mounted into host's `/tmp/apptainer_tmp`.
-
-## Repository structure
+### Repository structure
 
 ```
 .
 ├── images
 ├── install
 ├── mount
-├── overlays
-├── README.md
 ├── recipes
 ├── scripts
-├── user_ros_workspace
-└── example_wrapper.sh
+├── workspaces
+├── run_container.sh
+└── README.md
 ```
 
 <details>
 <summary>>>> Click to expand <<<</summary>
 
-### example_wrapper.sh
+#### run_container.sh
 
-Example of our apptainer wrapper script.
-Use this to start our container.
-The script contains a _user configuration section_.
+* Prepares the images from the recipe files.
+* Creates the mount points and prepares the necessary flags for the `apptainer` command.
 
-### scripts
+#### images
 
-Shell scripts that automate some of the work with Apptainer.
-All the scripts expect to be run from within the _scripts_ folder.
+* Contains the images and sandboxes created by the `run_container.sh`.
+* The contents of this directory are .gitignored
 
-### images
+#### install
 
-Contains Apptainer images (.gitignored)
+* Contains the install script to download, install and test Apptainer.
 
-### install
+#### mount
 
-Installation scripts.
+* This directory is mounted inside `/opt/env/host/apptainer_config`.
+* It contains the configuration files for setting up the shell when the container starts, for e.g. `.bashrc`, `.profile`, and `.zshrc`
 
-### user_ros_workspace
+#### recipes
 
-ROS workspace folder mounted into the container's `~/user_ros_workspace`.
-Use this for storing and compiling your packages.
-The packages need to be placed directly into `user_ros_workspace/src` without linking.
-The links do not translate into the container.
-The contents of the `user_ros_workspace` folder are .gitignored.
+* Contains the definition and build files for creating Apptainer images and sandboxes.
 
-### mount
+#### scripts
 
-Folder with MRS scripts and shell additions are mounted dynamically into the container as `/opt/mrs/host`.
-The folder contains the `.bashrc`, `.profile`, and `.zshrc` that are sourced within the container when running it without the host's `$HOME`.
-You can modify these to change the ROS behavior.
+* Contains utility scripts.
 
-### ovelays
+#### workspaces
 
-Place for Apptainer overlay images (.gitignored).
+* This directory is always mounted inside the container and all the content inside the directory can be modified from the container.
+* It can be used to store third-party software packages and ROS packages which will be compiled and build from inside the container.
+* Do not use symlinks inside this directory as they can not be resolved from the container.
+* The contents of this directory are .gitignored.
 
-### recipes
-
-Apptainer recipes.
 </details>
 
-## Enabling nVidia graphics`
+### Making a new recipe
 
-Edit the parameter (false -> true)
-```bash
-USE_NVIDIA
-```
-in the `wrapper.sh` script to enable nVidia graphics integration.
-Beware, it is not guaranteed to work on all systems.
-Typical issues revolve around the `version 'GLIBC_2.34' not found` error.
+You can create your personal recipe, defining the software that should exist in the container and the behavior of the container itself.
 
-## Mounting host's $HOME
+* Create a new folder `my_recipe` inside the `recipes` folder.
+* Copy your Apptainer definition file inside `my_recipe` as `recipe.def` or use the following example below.
+* Copy the `build.sh` from another recipe and rename the `IMAGE_NAME` for the `run_apptaine.sh` script to find your recipe.
 
-The host's `$HOME` directory is not mounted by default.
-To mount the host's `$HOME` into the container, run the `./wrapper.sh` with `CONTAINED=false`.
-However, this will make the container's shells to source your shell RC file.
-To make the container run with the internal ROS environment, put the following code snippet into your `.bashrc` and/or `.zshrc`.
-`<mrs_apptainer>` stands for the path to where you have cloned this repository.
+```yaml
+# Source of the image
+Bootstrap: docker
+From: ros:noetic
 
-**BASH**:
-```bash
-if [ -n "$APPTAINER_NAME" ]; then
-  source <mrs_apptainer>/mount/apptainer_bashrc.sh
-fi
-```
+# You can add additional commands **at the and** of the `%post` section.
+%post
+  apt-get -y update
 
-**ZSH**:
-```bash
-if [ -n "$APPTAINER_NAME" ]; then
-  source <mrs_apptainer>/mount/apptainer_zshrc.sh
-fi
-```
+  # directory to store env config files
+  export CONTAINER_ENV_HOST=/opt/env/host
+  mkdir -p $CONTAINER_ENV_HOST
 
-## Installing additional stuff to a container
+  # link the env file (will be mounted at runtime) to the default env file
+  # file in /.singularity.d/env/99-env.sh are sourced at startup
+  ln -s $CONTAINER_ENV_HOST/apptainer_config/99-env.sh /.singularity.d/env/99-env.sh
 
-There are several ways to alter the provided container.
+  # ONLY MODIFY AFTER THIS
 
-### Creating persistent overlay (preferred)
+  # install visual studio code
+  # takeon from https://code.visualstudio.com/docs/setup/linux
+  cd /tmp
+  wget -qO- https://packages.microsoft.com/keys/microsoft.asc | gpg --dearmor > packages.microsoft.gpg
+  install -o root -g root -m 644 packages.microsoft.gpg /etc/apt/trusted.gpg.d/
+  sh -c 'echo "deb [arch=amd64,arm64,armhf signed-by=/etc/apt/trusted.gpg.d/packages.microsoft.gpg] https://packages.microsoft.com/repos/code stable main" > /etc/apt/sources.list.d/vscode.list'
+  rm -f packages.microsoft.gpg
 
-A persistent overlay is an additional image that is dynamically loaded and _attached_ to the provided container.
-Using an overlay is the most straightforward way to store changes to the container, e.g., additional installed software and libraries.
+%environment
+  export LANG=en_US.UTF-8
 
-1. Create the overlay image using the provided script: [./scripts/create_overlay.sh](./scripts/create_overlay.sh) (choose the overlay size in the script)
-2. Set `OVERLAY=TRUE` inside `wrapper.sh`.
-3. Run `sudo ./wrapper` to install additional stuff, e.g.:
-```bash
-apt-get install git
-```
-Remember not to put stuff in `$HOME`.
+%runscript
+  CMD="${@}"
 
-4. Exit the container's terminal and start the wrapper without sudo: `./wrapper.sh`
-5. Now, `git` should be installed.
+  if [ -z "${CMD}" ]; then
+    /bin/zsh --login
+  else
+    /bin/zsh --login -c "${CMD}"
+  fi
 
-Optinally, the overlay can be embedded into the provided image by running [./scripts/embed_overlay.sh](./scripts/embed_overlay.sh).
-Embedding an overlay might be helpful, e.g., when providing the altered image to a third party.
-
-### Bootstrapping into a new container (preferred in later stages)
-
-Although overlays are great, they pose disadvantages: they cannot be versioned, documented, and automated.
-That can be overcome by bootstrapping the provided image into a new Apptainer image using a custom Apptainer recipe.
-
-**PROS**:
-
-The preferred way is to bootstrap the existing container into a new container with a custom recipe file.
-Creating a customized image allows you to be independent on the input container, receive updates and be compatible with the provided container.
-
-**CONS:**
-
-Building a new container takes longer.
-Therefore, finding out what you need to do is tedious.
-However, finding what actions you need to take can be done by using an overlay or modifying the container directly.
-See the manual down below.
-
-An example recipe, that creates a new image with [Visual Studio Code]() can be found in [./recipes/user_modifications_from_existing_img](./recipes/user_modifications_from_existing_img)
-User modifications can also be added directly by modifying one of the main recipes.
-However, creating a custom recipe for modifying an already existing image is a more future-proof solution.
-
-### Modifying an existing container (possible but not recommended)
-
-If you need to change the container (even removing files), you can do that by following these steps:
-
-1. convert it to the _sandbox_ container ([./scripts/convert_sandbox.sh](./scripts/convert_sandbox.sh), `TO_SANBOX=true`):
-```bash
-sudo apptainer build --sandbox <final-container-directory> <input-file.sif>
-```
-2. modify the path to the container in the `wrapper.sh`:
-```bash
-CONTAINER_NAME="mrs_uav_system/"
-```
-3. run the `./wrapper.sh` while setting these variables withing the script: `WRITABLE=true`,
-4. modify the container, install stuff, etc.,
-5. convert back to `.sif`, ([./scripts/convert_sandbox.sh](./scripts/convert_sandbox.sh), `TO_SANBOX=false`):
-```bash
-sudo apptainer build <output-file.sif> <input-container-directory/>
-```
-6. undo the changes in the wrapper, i.e., set `WRITABLE=false` and `CONTAINER_NAME="mrs_uav_system.sif"`.
-
-# Troubleshooting
-
-## General runtime problems
-
-If something is behaving strangly, it might be because your `$HOME` within the container is somehow corrupted.
-The first go-to solution is to clean the container's `HOME` and `TMP`.
-These folders are located in `/tmp/apptainer` of your machine.
-```bash
-rm -rf /tmp/apptainer
+  exit 0
 ```
 
-## No loop devices available
+### Default flags
+
+| Flag | true | false |
+|------|------|-------|
+| CONTAINED | Isolate the $HOME, /tmp, /var/tmp, $CWD of host | Isolate only $HOME and $CWD of host |
+| CLEAN_ENV | Container has no env variables from the parent shell | Container has env variables from the parent shell |
+| USE_NVIDIA | Container has access to the Nvidia graphic drivers (if available) | Not using Nvidia graphics |
+| WRITABLE | Provide read/write access to the entire container | Only read access to the container (other than the `workspaces`)|
+| FAKEROOT | Emulate `root` user inside the container (for `apt install` etc.) | Only have `$USER` level access inside the container |
+
+### Mounting inside the container
+
+| HOST PATH                                   | CONTAINER PATH                                 | Notes                                                      |
+|----------------------------------------------|------------------------------------------------|------------------------------------------------------------|
+| $APPTAINER_PATH/workspaces                   | $CONTAINER_HOME/workspaces                     | Contains all the software development packages                                                            |
+| $MOUNT_PATH                                  | $CONTAINER_ENV_HOST/apptainer_config/          | Custom config only used for Apptainer containers           |
+| $HOME/.zshrc                                 | $CONTAINER_ENV_HOST/dot_config/dot_zshrc       | Use the shell config of the user inside the container      |
+| $HOME/.tmux-themepack                        | $CONTAINER_ENV_HOST/dot_config/dot_tmux-themepack | Use the tmux theme of the user inside the container   |
+| $HOME/.tmux.conf                             | $CONTAINER_ENV_HOST/dot_config/dot_tmux.conf   | Use the tmux config of the user inside the container      |
+| $HOME/.config/starship.toml                  | $CONTAINER_ENV_HOST/dot_config/starship.toml   | Use the starship config of the user inside the container      |
+| /tmp/.X11-unix                               | /tmp/.X11-unix                                 | Facilitate Xserver connection |
+| /dev/dri                                     | /dev/dri                                       | Facilitate Xserver piping                                  |
+| $HOME/.Xauthority                            | $CONTAINER_HOME/.Xauthority                    | Facilitate Xserver piping                                  |
+
+* You can add an addition mounting option by adding the following line to the `MOUNTS` list inside `run_apptainer.sh`.
+
+```bash
+"type=bind" "<absolute-path-in-host>" "<absolute-path-inside-container>"
+```
+
+## Troubleshooting
+
+**No loop devices available**
 
 If you encounter "**No loop devices available**" problem while running apptainer:
- * first try to update apptainer to the newest version and reboot your machine,
- * if this does not help, please add `GRUB_CMDLINE_LINUX="max_loop=256"` into `/etc/default/grub` and reboot your machine.
+
+* first try to update apptainer to the newest version and reboot your machine,
+* if this does not help, please add `GRUB_CMDLINE_LINUX="max_loop=256"` into `/etc/default/grub` and reboot your machine.
