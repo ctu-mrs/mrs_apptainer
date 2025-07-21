@@ -45,7 +45,7 @@ Now, you should see the terminal prompt of the apptainer container, similar to t
 [MRS Apptainer] user@hostname:~$
 ```
 
-You can test whether the MRS UAV System is operational by starting the [example Gazebo simulation session](https://ctu-mrs.github.io/docs/simulation/gazebo/gazebo/howto.html).
+You can test whether the MRS UAV System is operational by starting the [example Gazebo simulation session](https://ctu-mrs.github.io/docs/simulations/gazebo/howto).
 ```bash
 [MRS Apptainer] user@hostname:~$ roscd mrs_uav_gazebo_simulation/tmux/one_drone
 [MRS Apptainer] user@hostname:~$ ./start.sh
