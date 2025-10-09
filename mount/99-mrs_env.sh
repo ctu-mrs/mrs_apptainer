@@ -4,7 +4,6 @@ MRS_LOCATION=/opt/mrs
 
 # link bash and zsh rc files
 [ ! -e ~/.bashrc ] &&  ln -s $MRS_LOCATION/host/apptainer_bashrc.sh ~/.bashrc
-[ ! -e ~/.zshrc ] && ln -s $MRS_LOCATION/host/apptainer_zshrc.sh ~/.zshrc
 [ ! -e ~/.profile ] && ln -s $MRS_LOCATION/host/apptainer_profile.sh ~/.profile
 
 touch ~/.sudo_as_admin_successful

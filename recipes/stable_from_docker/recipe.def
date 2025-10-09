@@ -1,14 +1,11 @@
-Bootstrap: docker
+Bootstrap: docker-daemon
 
-From: ctumrs/mrs_uav_system:latest
+From: ctumrs/mrs_uav_system:stable
 
 %post
 
     # git handy when cloning inside the container
     sudo apt-get -y install git
-
-    # python virtual environment for setting up custom venvs
-    apt-get -y install python3-venv
 
     # location for the apptainer files
     export MRS_LOCATION=/opt/mrs

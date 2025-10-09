@@ -113,16 +113,10 @@ fi
 
 set -o vi
 
-source /opt/ros/noetic/setup.bash
-source /usr/share/gazebo/setup.bash
+source /opt/ros/jazzy/setup.bash
 
 # source the user_workspace, if it exists
-[ -e ~/user_ros_workspace/devel/setup.bash ] && source ~/user_ros_workspace/devel/setup.bash
-
-[ -z "$ROS_PORT" ] && export ROS_PORT=11311
-[ -z "$ROS_MASTER_URI" ] && export ROS_MASTER_URI=http://localhost:$ROS_PORT
-
-export ROS_WORKSPACES="$ROS_WORKSPACES ~/user_ros_workspace"
+[ -e ~/user_ros_workspace/install/setup.bash ] && source ~/user_ros_workspace/install/setup.bash
 
 # if host pc is not Ubuntu 20.04
 OS_INFO=$(cat /proc/version)
