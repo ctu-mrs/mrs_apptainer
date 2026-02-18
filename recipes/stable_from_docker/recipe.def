@@ -1,4 +1,5 @@
-Bootstrap: docker-daemon
+Bootstrap: docker # uncomment for bootstrapping from dockerhub
+# Bootstrap: docker-daemon # uncomment for bootstrapping from local docker daemon
 
 From: ctumrs/mrs_uav_system:stable
 
