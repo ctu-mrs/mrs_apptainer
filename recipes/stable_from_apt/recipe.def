@@ -1,9 +1,9 @@
 Bootstrap: docker # uncomment for bootstrapping from dockerhub
 # Bootstrap: docker-daemon # uncomment for bootstrapping from local docker daemon
 
-# From: ros:noetic # uncomment for bootstrapping from ROS Noetic image
-# From: ubuntu:20.04 # uncomment for bootstrapping from generic Ubuntu image
-From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
+# From: ros:jazzy # uncomment for bootstrapping from ROS Jazzy image
+From: ubuntu:24.04 # uncomment for bootstrapping from generic Ubuntu image
+# From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
 
 %post
 
@@ -11,23 +11,19 @@ From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linu
     apt-get -y update
     apt-get -y install sudo
     echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
-    sudo apt-get install -y -q
-    DEBIAN_FRONTEND=noninteractive sudo apt-get -y install keyboard-configuration
 
     # we need curl to add the PPAs later
     # git handy when cloning inside the container
-    sudo apt-get -y install curl git
+    # python virtual environment for setting up custom venvs
+    sudo apt-get -y install keyboard-configuration curl git python3-venv
 
     # install ROS
-    curl https://ctu-mrs.github.io/ppa-stable/add_ros_ppa.sh | bash
-    apt-get -y install ros-noetic-desktop-full
+    curl https://ctu-mrs.github.io/ppa2-stable/add_ros_ppa.sh | bash
+    apt-get -y install ros-jazzy-desktop-full
 
     # install the MRS UAV System
-    curl https://ctu-mrs.github.io/ppa-stable/add_ppa.sh | bash
-    apt-get -y install ros-noetic-mrs-uav-system-full
-
-    # python virtual environment for setting up custom venvs
-    apt-get -y install python3-venv
+    curl https://ctu-mrs.github.io/ppa2-stable/add_ppa.sh | bash
+    apt-get -y install ros-jazzy-mrs-uav-system-full
 
     # location for the apptainer files
     export MRS_LOCATION=/opt/mrs
