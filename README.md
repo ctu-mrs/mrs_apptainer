@@ -50,8 +50,8 @@ Now, you should see the terminal prompt of the apptainer container, similar to t
 You can test whether the MRS UAV System is operational by starting the [example Gazebo simulation session](https://ctu-mrs.github.io/docs/simulations/gazebo/howto).
 
 ```bash
-[MRS Apptainer] user@hostname:~$ cd $(ros2 pkg prefix --share mrs_uav_gazebo_simulator)/tmux/one_drone
-[MRS Apptainer] user@hostname:~$ ./start.sh
+cd $(ros2 pkg prefix --share mrs_uav_gazebo_simulator)/tmux/one_drone
+./start.sh
 ```
 
 5. To compile your software with the MRS UAV System dependencies, start by placing your packages into the `<mrs_apptainer>/user_ros_workspace/src` folder of this repository. As an example, let's clone the [mrs_core_examples](https://github.com/ctu-mrs/mrs_core_examples/tree/ros2).
@@ -61,12 +61,11 @@ cd user_ros_workspace/src
 git clone -b ros2 https://github.com/ctu-mrs/mrs_core_examples.git
 ```
 
-This host's computer folder is mounted into the container as `~/user_ros_workspace`. You can then run the apptainer container, [init the workspace](https://ctu-mrs.github.io/docs/prerequisites/ros2/workspace-build), and build the packages by:
+This host's computer folder is mounted into the container as `~/user_ros_workspace`. You can then run the apptainer container, [init the workspace](https://ctu-mrs.github.io/docs/prerequisites/ros2/workspace-build), and build the packages by entering into the container with `./wrapper.sh` and then running:
 
 ```bash
-./wrapper.sh
-[MRS Apptainer]$ cd ~/user_ros_workspace/
-[MRS Apptainer]$ colcon build
+cd ~/user_ros_workspace/
+colcon build
 ```
 
 Although the workspace resides on your host computer, the software cannot be run by the host system as the container has all the dependencies.
@@ -74,8 +73,8 @@ Although the workspace resides on your host computer, the software cannot be run
 To start the software, run this from within the container:
 
 ```bash
-[MRS Apptainer] user@hostname:~$ cd ~/user_ros_workspace/src/mrs_core_examples/cpp/example_waypoint_flier/tmux
-[MRS Apptainer] user@hostname:~$ ./start.sh
+cd ~/user_ros_workspace/src/mrs_core_examples/cpp/example_waypoint_flier/tmux
+./start.sh
 ```
 
 ## Tailoring the recipes to your needs
@@ -177,7 +176,7 @@ Beware, it is not guaranteed to work on all systems. Typical issues revolve arou
 
 ## Mounting host's $HOME
 
-The host's `$HOME` directory is not mounted by default. To mount the host's `$HOME` into the container, run the `./wrapper.sh` with `CONTAINED=false`. However, this will make the container's shells to source your shell RC file.
+The host's `$HOME` directory is not mounted by default. To mount the host's `$HOME` into the container, run `./wrapper.sh` with `CONTAINED=false`. However, this will make the container's shells to source your shell RC file.
 
 To make the container run with the internal ROS environment, put the following code snippet into your `.bashrc` and/or `.zshrc`. `<mrs_apptainer>` stands for the path to where you have cloned this repository.
 
@@ -249,7 +248,7 @@ sudo apptainer build --sandbox <final-container-directory> <input-file.sif>
 ```
 
 2. modify the path to the container in the `wrapper.sh`:
-roscd
+
 ```bash
 CONTAINER_NAME="mrs_uav_system/"
 ```
@@ -294,4 +293,3 @@ xhost + > /dev/null 2>&1
 
 $EXEC_CMD apptainer $ACTION \
 ```
-
