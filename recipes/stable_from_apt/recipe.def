@@ -1,29 +1,24 @@
 Bootstrap: docker # uncomment for bootstrapping from dockerhub
 # Bootstrap: docker-daemon # uncomment for bootstrapping from local docker daemon
 
-# From: ros:jazzy # uncomment for bootstrapping from ROS Jazzy image
-From: ubuntu:24.04 # uncomment for bootstrapping from generic Ubuntu image
+From: ros:jazzy # uncomment for bootstrapping from ROS's official image
+# From: ubuntu:24.04 # uncomment for bootstrapping from generic Ubuntu image
 # From: klaxalk/linux-setup:master # uncomment for bootstrapping from Tomas's linux-setup
 
 %post
 
-    # fix prompts during installation
-    apt-get -y update
-    apt-get -y install sudo
+    # fix prompts during installation, install common packages
+    apt-get update
+    apt-get -y install sudo keyboard-configuration curl git python3-venv
     echo 'debconf debconf/frontend select Noninteractive' | sudo debconf-set-selections
 
-    # we need curl to add the PPAs later
-    # git handy when cloning inside the container
-    # python virtual environment for setting up custom venvs
-    sudo apt-get -y install keyboard-configuration curl git python3-venv
-
     # install ROS
-    curl https://ctu-mrs.github.io/ppa2-stable/add_ros_ppa.sh | bash
-    apt-get -y install ros-jazzy-desktop-full
+    # curl https://ctu-mrs.github.io/ppa2-stable/add_ros_ppa.sh | bash
+    apt-get -y install ros-$ROS_DISTRO-desktop-full
 
     # install the MRS UAV System
     curl https://ctu-mrs.github.io/ppa2-stable/add_ppa.sh | bash
-    apt-get -y install ros-jazzy-mrs-uav-system-full
+    apt-get -y install ros-$ROS_DISTRO-mrs-uav-system-full
 
     # location for the apptainer files
     export MRS_LOCATION=/opt/mrs

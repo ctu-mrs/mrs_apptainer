@@ -113,7 +113,7 @@ fi
 
 set -o vi
 
-source /opt/ros/jazzy/setup.bash
+source /opt/ros/$ROS_DISTRO/setup.bash
 
 # source the user_workspace, if it exists
 [ -e ~/user_ros_workspace/install/setup.bash ] && source ~/user_ros_workspace/install/setup.bash
