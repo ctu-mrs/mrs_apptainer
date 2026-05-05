@@ -33,7 +33,9 @@ CLEAN_ENV=true # true: will clean the shell environment before runnning containe
 
 USE_NVIDIA=false # true: will tell Apptainer that it should use nvidia graphics. Does not work every time.
 
-# the following are mutually exclusive
+# OVERLAY and WRITABLE are mutually exclusive.
+# FAKEROOT is independent and is combined with OVERLAY (or WRITABLE)
+# when you need root inside the container, e.g. to `apt install` packages.
 OVERLAY=false  # true: will load persistant overlay (overlay can be created with scripts/create_overlay.sh)
 WRITABLE=false # true: will run it as --writable (works with --sandbox containers, image can be converted with scripts/convert_sandbox.sh)
 FAKEROOT=false # true: emulate root inside the container
@@ -75,7 +77,7 @@ CONTAINER_PATH=$IMAGES_PATH/$CONTAINER_NAME
 if $OVERLAY; then
 
   if [ ! -e $OVERLAYS_PATH/$OVERLAY_NAME ]; then
-    echo "Overlay file does not exist, initialize it with the 'create_fs_overlay.sh' script"
+    echo "Overlay file does not exist, initialize it with the 'scripts/create_overlay.sh' script"
     exit 1
   fi
 
