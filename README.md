@@ -275,3 +275,15 @@ rm -rf /tmp/apptainer
 If you encounter "**No loop devices available**" problem while running apptainer:
  * first try to update apptainer to the newest version and reboot your machine,
  * if this does not help, please add `GRUB_CMDLINE_LINUX="max_loop=256"` into `/etc/default/grub` and reboot your machine.
+
+## SSH agent asking for key passphrase constantly
+
+If you are using SSH keys with passphrases and the SSH agent within the container keeps asking for the passphrase, you can try the following solution:
+In your `wrapper.sh`, inside the section `MOUNTS=(`, add `"type=bind" "$SSH_AUTH_SOCK" "$SSH_AUTH_SOCK"`, then add `export APPTAINERENV_SSH_AUTH_SOCK=$SSH_AUTH_SOCK` wherever you wish, but it just has to be before this part of the wrapper:
+
+```bash
+xhost + > /dev/null 2>&1
+
+$EXEC_CMD apptainer $ACTION \
+```
+
