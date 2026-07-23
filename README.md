@@ -159,6 +159,10 @@ Place for Apptainer overlay images (.gitignored).
 Apptainer recipes.
 </details>
 
+## Enabling modern Intel graphics
+
+Check out the [howto_hwacc_xe2.md](howto_hwacc_xe2.md) HowTo.
+
 ## Enabling nVidia graphics`
 
 Edit the parameter (false -> true)

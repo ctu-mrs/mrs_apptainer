@@ -2,3 +2,8 @@
 *.swo
 *.sif
 wrapper.sh
+
+# custom Mesa build for Intel Xe2 hardware OpenGL (scripts/build_mesa_xe2.sh)
+opt_mesa/
+# writable build sandboxes created from .sif images
+images/*_sbx/
