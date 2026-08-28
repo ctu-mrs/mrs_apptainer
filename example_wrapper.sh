@@ -187,7 +187,7 @@ else
 fi
 
 # create tmp folder for apptainer in host's tmp
-[ ! -e /tmp/apptainer/tmp ] && mkdir -p /tmp/apptainer/tmp
+[ ! -e /tmp/apptainer/tmp ] && mkdir -p /tmp/apptainer/tmp && chmod 1777 /tmp/apptainer/tmp
 [ ! -e /tmp/apptainer/home ] && mkdir -p /tmp/apptainer/home
 
 # this will set $DISPLAY in the container to the same value as on your host machine
